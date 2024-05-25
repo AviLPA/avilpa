@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="{{url_for('static', filename='chainicon.png')}}" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChainLink</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .navbar {
+        background-color: lightblue;
+        overflow: hidden;
+        padding: 5px;
+      }
+      .navbar img {
+        float: left;
+        width: 40px;
+        height: auto;
+      }
+      .navbar .title {
+        float: left;
+        margin-left: 10px;
+        font-size: 20px;
+        font-weight: bold;
+        line-height: 40px;
+        font-family: Helvetica;
+      }
+      .navbar a {
+        float: right;
+        padding: 10px 15px;
+        text-align: center;
+        text-decoration: none;
+        color: black;
+        font-size: 16px;
+        border-radius: 5px;
+      }
+      .navbar a:hover {
+        background-color: #85cddd;
+        color: black;
+      }
+      .container {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        justify-content: center;
+        max-width: 600px;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        text-align: center;
+      }
+      .container h1 {
+        margin-bottom: 5%;
+      }
+      .container form {
+        display: inline-block;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+        position: relative;
+        align-items: center;
+      }
+      .container input[type='file'] {
+        position: relative;
+        flex-direction: column;
+        justify-content: center;
+      }
+      input[type='file']::file-selector-button {
+        width: 136px;
+        color: transparent;
+      }
+      input[type='file']::before {
+        position: absolute;
+        pointer-events: none;
+        top: 10px;
+        left: 16px;
+        height: 20px;
+        width: 20px;
+        content: '';
+        background-image: url("{{url_for('static', filename='uploadicon.svg')}}");
+      }
+      input[type='file']::after {
+        position: absolute;
+        pointer-events: none;
+        top: 11px;
+        left: 40px;
+        color: #0964b0;
+        content: 'Upload File';
+      }
+      input[type='file']::file-selector-button {
+        border-radius: 4px;
+        padding: 0 16px;
+        height: 40px;
+        cursor: pointer;
+        background-color: white;
+        border: 1px solid rgba(0, 0, 0, 0.16);
+        box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.05);
+        margin-right: 16px;
+        transition: background-color 200ms;
+      }
+      input[type='file']::file-selector-button:hover {
+        background-color: #f3f4f6;
+      }
+      input[type='file']::file-selector-button:active {
+        background-color: #e5e7eb;
+      }
+      .container button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 20px;
+        background-color: lightblue;
+        color: black;
+        font-size: 16px;
+        cursor: pointer;
+        box-shadow: 2px 2px 5px #aaa;
+        margin-top: 5%;
+      }
+      .container button:hover {
+        background-color: #007bff;
+        color: white;
+      }
+      #result {
+        margin-top: 20px;
+        font-weight: bold;
+      }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <img src="{{url_for('static', filename='chainicon.png')}}" alt="ChainLink Logo" />
+        <div class="title">ChainLink</div>
+        <a href="#home">Home</a>
+    </div>
+    <div class="container">
+        <h1>Upload a Video</h1>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <input type="file" id="videoInput" name="video" accept="video/mp4,video/quicktime">
+            <button type="button" onclick="uploadVideo()">Upload</button>
+        </form>
+        <div id="result"></div>
+    </div>
+    <script>
+        async function uploadVideo() {
+            const form = document.getElementById('uploadForm');
+            const formData = new FormData(form);
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = 'Processing...';
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+                resultDiv.textContent = `Hash: ${result.hash}\nWallet: ${result.wallet}\nResult: ${result.message}`;
+            } catch (error) {
+                resultDiv.textContent = 'Error processing video';
+            }
+        }
+    </script>
+</body>
+</html>
