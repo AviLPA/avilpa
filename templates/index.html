@@ -4,161 +4,249 @@
     <link rel="icon" href="{{url_for('static', filename='chainicon.png')}}" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChainLink</title>
+    <title>DocuLink</title>
     <style>
-      body {
-        font-family: Arial, sans-serif;
-      }
-      .navbar {
-        background-color: lightblue;
-        overflow: hidden;
-        padding: 5px;
-      }
-      .navbar img {
-        float: left;
-        width: 40px;
-        height: auto;
-      }
-      .navbar .title {
-        float: left;
-        margin-left: 10px;
-        font-size: 20px;
-        font-weight: bold;
-        line-height: 40px;
-        font-family: Helvetica;
-      }
-      .navbar a {
-        float: right;
-        padding: 10px 15px;
-        text-align: center;
-        text-decoration: none;
-        color: black;
-        font-size: 16px;
-        border-radius: 5px;
-      }
-      .navbar a:hover {
-        background-color: #85cddd;
-        color: black;
-      }
-      .container {
-        display: flex;
-        flex-direction: column;
-        position: relative;
-        justify-content: center;
-        max-width: 600px;
-        margin: 10% auto;
-        padding: 20px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        text-align: center;
-      }
-      .container h1 {
-        margin-bottom: 5%;
-      }
-      .container form {
-        display: inline-block;
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 20px;
-        position: relative;
-        align-items: center;
-      }
-      .container input[type='file'] {
-        position: relative;
-        flex-direction: column;
-        justify-content: center;
-      }
-      input[type='file']::file-selector-button {
-        width: 136px;
-        color: transparent;
-      }
-      input[type='file']::before {
-        position: absolute;
-        pointer-events: none;
-        top: 10px;
-        left: 16px;
-        height: 20px;
-        width: 20px;
-        content: '';
-        background-image: url("{{url_for('static', filename='uploadicon.svg')}}");
-      }
-      input[type='file']::after {
-        position: absolute;
-        pointer-events: none;
-        top: 11px;
-        left: 40px;
-        color: #0964b0;
-        content: 'Upload File';
-      }
-      input[type='file']::file-selector-button {
-        border-radius: 4px;
-        padding: 0 16px;
-        height: 40px;
-        cursor: pointer;
-        background-color: white;
-        border: 1px solid rgba(0, 0, 0, 0.16);
-        box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.05);
-        margin-right: 16px;
-        transition: background-color 200ms;
-      }
-      input[type='file']::file-selector-button:hover {
-        background-color: #f3f4f6;
-      }
-      input[type='file']::file-selector-button:active {
-        background-color: #e5e7eb;
-      }
-      .container button {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 20px;
-        background-color: lightblue;
-        color: black;
-        font-size: 16px;
-        cursor: pointer;
-        box-shadow: 2px 2px 5px #aaa;
-        margin-top: 5%;
-      }
-      .container button:hover {
-        background-color: #007bff;
-        color: white;
-      }
-      #result {
-        margin-top: 20px;
-        font-weight: bold;
-      }
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .navbar {
+            background-color: lightblue;
+            overflow: hidden;
+            padding: 5px;
+        }
+        .navbar img {
+            float: left;
+            width: 40px;
+            height: auto;
+        }
+        .navbar .title {
+            float: left;
+            margin-left: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            line-height: 40px;
+            font-family: Helvetica;
+        }
+        .navbar a {
+            float: right;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            color: black;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        .navbar a:hover {
+            background-color: #85cddd;
+            color: black;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            justify-content: center;
+            max-width: 600px;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .upload-box {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .info-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        .container h1 {
+            margin-bottom: 5%;
+        }
+        .container form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container input[type='file'] {
+            position: relative;
+            flex-direction: column;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        input[type='file']::file-selector-button {
+            width: 136px;
+            color: transparent;
+        }
+        input[type='file']::before {
+            position: absolute;
+            pointer-events: none;
+            top: 10px;
+            left: 16px;
+            height: 20px;
+            width: 20px;
+            content: '';
+            background-image: url("{{url_for('static', filename='uploadicon.svg')}}");
+        }
+        input[type='file']::after {
+            position: absolute;
+            pointer-events: none;
+            top: 11px;
+            left: 40px;
+            color: #0964b0;
+            content: 'Upload File';
+        }
+        input[type='file']::file-selector-button {
+            border-radius: 4px;
+            padding: 0 16px;
+            height: 40px;
+            cursor: pointer;
+            background-color: white;
+            border: 1px solid rgba(0, 0, 0, 0.16);
+            box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.05);
+            margin-right: 16px;
+            transition: background-color 200ms;
+        }
+        input[type='file']::file-selector-button:hover {
+            background-color: #f3f4f6;
+        }
+        input[type='file']::file-selector-button:active {
+            background-color: #e5e7eb;
+        }
+        .container button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background-color: lightblue;
+            color: black;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 2px 2px 5px #aaa;
+            margin-top: 10px;
+        }
+        .container button:hover {
+            background-color: #007bff;
+            color: white;
+        }
+        #progressBar {
+            width: 100%;
+            background-color: #f3f4f6;
+            border-radius: 5px;
+            margin: 20px 0;
+            display: none;
+        }
+        #progress {
+            height: 20px;
+            width: 0;
+            background-color: #4caf50;
+            border-radius: 5px;
+        }
+        .box {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            display: none;
+        }
+        .green-box {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .red-box {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
     </style>
 </head>
 <body>
     <div class="navbar">
-        <img src="{{url_for('static', filename='chainicon.png')}}" alt="ChainLink Logo" />
-        <div class="title">ChainLink</div>
+        <img src="{{url_for('static', filename='chainicon.png')}}" alt="DocuLink Logo" />
+        <div class="title">DocuLink</div>
         <a href="#home">Home</a>
     </div>
     <div class="container">
         <h1>Upload a Video</h1>
-        <form id="uploadForm" enctype="multipart/form-data">
-            <input type="file" id="videoInput" name="video" accept="video/mp4,video/quicktime">
-            <button type="button" onclick="uploadVideo()">Upload</button>
-        </form>
-        <div id="result"></div>
+        <div class="upload-box">
+            <form id="uploadForm" enctype="multipart/form-data">
+                <input type="file" id="videoInput" name="video" accept="video/mp4,video/quicktime">
+                <button type="button" onclick="uploadVideo()">Upload</button>
+            </form>
+            <div id="progressBar">
+                <div id="progress"></div>
+            </div>
+        </div>
+        <div id="walletBox" class="info-box"></div>
+        <div id="hashBox" class="info-box"></div>
+        <div class="box green-box" id="greenBox"></div>
+        <div class="box red-box" id="redBox"></div>
     </div>
     <script>
+        function startProgress() {
+            const eventSource = new EventSource('/progress');
+            const progress = document.getElementById('progress');
+
+            eventSource.onmessage = function(event) {
+                const data = event.data.split('|');
+                const processedFrames = parseInt(data[0]);
+                const totalFrames = parseInt(data[1]);
+                const progressPercent = Math.round((processedFrames / totalFrames) * 100);
+                progress.style.width = progressPercent + '%';
+
+                if (processedFrames >= totalFrames) {
+                    eventSource.close();
+                }
+            };
+        }
+
         async function uploadVideo() {
             const form = document.getElementById('uploadForm');
             const formData = new FormData(form);
-            const resultDiv = document.getElementById('result');
-            resultDiv.textContent = 'Processing...';
+            const progressBar = document.getElementById('progressBar');
+            const greenBox = document.getElementById('greenBox');
+            const redBox = document.getElementById('redBox');
+            const walletBox = document.getElementById('walletBox');
+            const hashBox = document.getElementById('hashBox');
+
+            progressBar.style.display = 'block';
+            greenBox.style.display = 'none';
+            redBox.style.display = 'none';
+            walletBox.textContent = '';
+            hashBox.textContent = '';
+
             try {
+                startProgress();
                 const response = await fetch('/upload', {
                     method: 'POST',
-                    body: formData
+                    body: formData,
                 });
+
                 const result = await response.json();
-                resultDiv.textContent = `Hash: ${result.hash}\nWallet: ${result.wallet}\nResult: ${result.message}`;
+                walletBox.textContent = `Wallet: ${result.wallet}`;
+                hashBox.textContent = `Hash: ${result.hash}`;
+
+                // Check for transaction status explicitly
+                if (result.message.includes("Transaction found")) {
+                    greenBox.textContent = result.message;
+                    greenBox.style.display = 'block';
+                    redBox.style.display = 'none';
+                } else {
+                    redBox.textContent = result.message;
+                    redBox.style.display = 'block';
+                    greenBox.style.display = 'none';
+                }
+
             } catch (error) {
-                resultDiv.textContent = 'Error processing video';
+                progressBar.style.display = 'none';
+                redBox.style.display = 'block';
+                redBox.textContent = 'Error processing video';
             }
         }
     </script>
 </body>
 </html>
+
