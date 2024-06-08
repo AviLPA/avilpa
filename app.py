@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify, render_template, Response
-from flask_cors import CORS
 import os
 import cv2
 from PIL import Image, UnidentifiedImageError
@@ -13,7 +12,6 @@ import time
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
-CORS(app)
 
 API_URL = "https://cardano-mainnet.blockfrost.io/api/v0"
 API_KEY = "mainnetFBbCwStELF11HELdNM1K9YAKmcs1GUdl"
