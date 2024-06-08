@@ -8,37 +8,46 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         .navbar {
             background-color: lightblue;
             overflow: hidden;
-            padding: 5px;
+            padding: 5px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
         .navbar img {
-            float: left;
             width: 40px;
             height: auto;
         }
         .navbar .title {
-            float: left;
-            margin-left: 10px;
-            font-size: 20px;
+            color: black;
+            font-size: 24px;
             font-weight: bold;
-            line-height: 40px;
-            font-family: Helvetica;
+            text-align: center;
+            flex: 1;
+            margin-left: 4cm;  /* Adjusted line */
+        }
+        .navbar .links {
+            display: flex;
+            gap: 20px;
         }
         .navbar a {
-            float: right;
-            padding: 10px 15px;
-            text-align: center;
-            text-decoration: none;
             color: black;
-            font-size: 16px;
+            text-decoration: none;
+            padding: 8px 16px;
             border-radius: 5px;
+            transition: background-color 0.3s ease;
         }
         .navbar a:hover {
             background-color: #85cddd;
-            color: black;
+        }
+        .navbar a.active {
+            font-weight: bold;
         }
         .container {
             display: flex;
@@ -68,6 +77,7 @@
         }
         .container h1 {
             margin-bottom: 5%;
+            font-size: 24px; /* Adjust the size as needed */
         }
         .container form {
             display: flex;
@@ -161,20 +171,96 @@
             background-color: #f8d7da;
             color: #721c24;
         }
+        .section {
+            display: none;
+            padding: 40px 20px;
+        }
+        .section.active {
+            display: block;
+        }
+        .container-about {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+            color: #333;
+        }
+        .container-about h1 {
+            color: #007bff;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        .container-about p {
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        .container-about h2 {
+            color: #0056b3;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        .container-about ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .container-about ul li {
+            font-size: 18px;
+            margin-bottom: 15px;
+            padding-left: 20px;
+            position: relative;
+        }
+        .container-about ul li::before {
+            content: '•';
+            color: #007bff;
+            position: absolute;
+            left: 0;
+            font-size: 20px;
+            line-height: 1.2;
+        }
+        .use-case-toggle {
+            cursor: pointer;
+            color: #007bff;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+        .use-case-content {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            text-align: left;
+        }
+        .use-case-content h3 {
+            font-size: 20px;
+            color: #0056b3;
+            margin-bottom: 10px;
+        }
+        .use-case-content h4 {
+            font-size: 18px;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
     <div class="navbar">
         <img src="{{url_for('static', filename='chainicon.png')}}" alt="DocuLink Logo" />
         <div class="title">DocuLink</div>
-        <a href="#home">Home</a>
+        <div class="links">
+            <a id="homeLink" onclick="showSection('home')">Home</a>
+            <a id="aboutLink" onclick="showSection('about')">About</a>
+        </div>
     </div>
-    <div class="container">
-        <h1>Upload a Video</h1>
+    <div class="container section" id="home">
+        <h1>Check Video Authenticity</h1>
         <div class="upload-box">
             <form id="uploadForm" enctype="multipart/form-data">
-                <input type="file" id="videoInput" name="video" accept="video/mp4,video/quicktime">
-                <button type="button" onclick="uploadVideo()">Upload</button>
+                <input type="file" id="fileInput" name="file" accept="video/mp4,video/quicktime,image/png,image/jpeg">
+                <button type="button" onclick="uploadFile()">Upload</button>
             </form>
             <div id="progressBar">
                 <div id="progress"></div>
@@ -184,8 +270,93 @@
         <div id="hashBox" class="info-box"></div>
         <div class="box green-box" id="greenBox"></div>
         <div class="box red-box" id="redBox"></div>
+        <div id="newWalletSection" style="display:none;">
+            <input type="text" id="newWalletInput" placeholder="Enter new wallet address">
+            <button type="button" onclick="reRunWithNewWallet()">Run this video with other wallet</button>
+        </div>
+    </div>
+    <div class="container-about section" id="about">
+        <h1>About DocuLink</h1>
+        <p>At DocuLink, we are dedicated to revolutionizing digital content verification through innovative blockchain technology. Our mission is to provide businesses with the tools they need to ensure the authenticity and integrity of their digital documents and media.</p>
+        <h2>Our Vision</h2>
+        <p>We envision a world where digital content is trustworthy and verifiable, safeguarding against fraud and misinformation.</p>
+        <h2>Our Solution</h2>
+        <p>DocuLink leverages advanced cryptographic techniques to create secure digital fingerprints for your content, recorded on an immutable blockchain. Here’s how we do it:</p>
+        <ul>
+            <li><strong>Cryptographic Hashing:</strong> Each document or media file is processed through a cryptographic hash function, generating a unique digital fingerprint (hash) that represents the content's integrity.</li>
+            <li><strong>Blockchain Recording:</strong> The generated hash is recorded on a decentralized blockchain, ensuring an immutable and tamper-proof record of the content's authenticity.</li>
+            <li><strong>Verification Tools:</strong> We provide user-friendly tools that allow anyone to verify the authenticity of a document by recalculating its hash and comparing it to the blockchain record. This process confirms whether the content has been altered since its original recording.</li>
+        </ul>
+        <h2>Why Choose Us</h2>
+        <p>Innovation: Cutting-edge technology for secure content verification.<br>
+        Trust: Building a trusted ecosystem for digital content.<br>
+        Security: Robust solutions to protect your intellectual property.</p>
+        <h2>Join Us</h2>
+        <p>Join us on our journey to create a more secure and transparent digital world. At DocuLink, we are committed to providing the highest level of security and trust for your digital content.</p>
+        <h2 class="use-case-toggle" onclick="toggleUseCase()">Use Case &#9660;</h2>
+        <div class="use-case-content" id="useCaseContent">
+            <h3>Scenario: Protecting a White Paper for SecureContent Project</h3>
+            <h4>Challenge:</h4>
+            <p>You have created a detailed white paper for your DocuLink project, which outlines the innovative use of blockchain for digital content verification. You need to ensure that the white paper remains secure and can be proven authentic if someone attempts to steal or alter it.</p>
+            <h4>Solution Implementation:</h4>
+            <p><strong>Document Creation and Hash Generation:</strong></p>
+            <ul>
+                <li><strong>White Paper Creation:</strong> You finalize the white paper detailing the DocuLink project, including all technical specifications and business strategies.</li>
+                <li><strong>Hash Generation:</strong> You use a cryptographic hash function (SHA-256) to generate a hash of the white paper document. This hash serves as a digital fingerprint of your document.</li>
+            </ul>
+            <p><strong>Hash Publication and Distribution:</strong></p>
+            <ul>
+                <li><strong>Hash Publication:</strong> You publish the hash value of the white paper on your official website and other verified channels. This establishes a public record of the document’s authenticity.</li>
+                <li><strong>Document Distribution:</strong> You distribute the white paper to stakeholders, investors, and potential partners. The document includes instructions on how to verify its authenticity using the published hash.</li>
+            </ul>
+            <p><strong>Verification Process:</strong></p>
+            <ul>
+                <li><strong>Hash Verification:</strong> Recipients can download the white paper and recalculate the hash of the document. They compare this recalculated hash with the published hash value.</li>
+                <li><strong>Results:</strong> If the hashes match, recipients are assured that the white paper is authentic and unaltered. If there’s a mismatch, it indicates potential tampering.</li>
+            </ul>
+            <h4>Example Scenario:</h4>
+            <p><strong>Document Protection:</strong></p>
+            <ul>
+                <li><strong>You:</strong> Finalize the white paper for the SecureContent project.</li>
+                <li><strong>Hash Generation:</strong> Generate a SHA-256 hash of the white paper:
+                    <br>Hash: abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234
+                </li>
+                <li><strong>Hash Publication:</strong> Publish the hash value on your official website and share it through your verified communication channels.</li>
+            </ul>
+            <p><strong>Attempted Theft and Verification:</strong></p>
+            <ul>
+                <li><strong>Thief:</strong> An individual attempts to steal and alter your white paper, making unauthorized changes to the document.</li>
+                <li><strong>Altered Document:</strong> The altered document has a different hash value when recalculated:
+                    <br>Altered Hash: 1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234
+                </li>
+                <li><strong>Stakeholder:</strong> A recipient of the white paper verifies the document by recalculating the hash:
+                    <br>Recalculated Hash: abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234
+                </li>
+                <li><strong>Verification Result:</strong> The recalculated hash matches the original published hash:
+                    <br>Original Hash: abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234
+                </li>
+            </ul>
+            <h4>Outcome:</h4>
+            <ul>
+                <li><strong>Security:</strong> The white paper remains secure, and any alterations can be easily detected.</li>
+                <li><strong>Trust:</strong> Stakeholders have confidence in the authenticity of your document.</li>
+                <li><strong>Integrity:</strong> You protect your intellectual property from theft and unauthorized changes.</li>
+            </ul>
+            <p>This process ensures that your white paper for the SecureContent project is securely protected and its authenticity can be verified, deterring potential theft or alteration.</p>
+        </div>
     </div>
     <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+            document.querySelectorAll('.navbar a').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.getElementById(sectionId + 'Link').classList.add('active');
+        }
+
         function startProgress() {
             const eventSource = new EventSource('/progress');
             const progress = document.getElementById('progress');
@@ -203,9 +374,64 @@
             };
         }
 
-        async function uploadVideo() {
+        async function uploadFile() {
             const form = document.getElementById('uploadForm');
             const formData = new FormData(form);
+            const progressBar = document.getElementById('progressBar');
+            const greenBox = document.getElementById('greenBox');
+            const redBox = document.getElementById('redBox');
+            const walletBox = document.getElementById('walletBox');
+            const hashBox = document.getElementById('hashBox');
+            const newWalletSection = document.getElementById('newWalletSection');
+
+            progressBar.style.display = 'block';
+            greenBox.style.display = 'none';
+            redBox.style.display = 'none';
+            walletBox.textContent = '';
+            hashBox.textContent = '';
+            newWalletSection.style.display = 'none';
+
+            try {
+                startProgress();
+                const response = await fetch('/upload_file', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const result = await response.json();
+                walletBox.textContent = `Wallet: ${result.wallet}`;
+                hashBox.textContent = `Hash: ${result.hash}`;
+                newWalletSection.style.display = 'block';
+
+                // Check for transaction status explicitly
+                if (result.message.includes("Transaction found")) {
+                    greenBox.textContent = result.message;
+                    greenBox.style.display = 'block';
+                    redBox.style.display = 'none';
+                } else {
+                    redBox.textContent = result.message;
+                    redBox.style.display = 'block';
+                    greenBox.style.display = 'none';
+                }
+
+            } catch (error) {
+                progressBar.style.display = 'none';
+                redBox.style.display = 'block';
+                redBox.textContent = 'Error processing file';
+            }
+        }
+
+        async function reRunWithNewWallet() {
+            const newWalletAddress = document.getElementById('newWalletInput').value;
+            if (!newWalletAddress) {
+                alert('Please enter a new wallet address.');
+                return;
+            }
+
+            const form = document.getElementById('uploadForm');
+            const formData = new FormData(form);
+            formData.append('newWallet', newWalletAddress);
+
             const progressBar = document.getElementById('progressBar');
             const greenBox = document.getElementById('greenBox');
             const redBox = document.getElementById('redBox');
@@ -215,12 +441,10 @@
             progressBar.style.display = 'block';
             greenBox.style.display = 'none';
             redBox.style.display = 'none';
-            walletBox.textContent = '';
-            hashBox.textContent = '';
 
             try {
                 startProgress();
-                const response = await fetch('/upload', {
+                const response = await fetch('/upload_file', {
                     method: 'POST',
                     body: formData,
                 });
@@ -243,7 +467,24 @@
             } catch (error) {
                 progressBar.style.display = 'none';
                 redBox.style.display = 'block';
-                redBox.textContent = 'Error processing video';
+                redBox.textContent = 'Error processing file';
+            }
+        }
+
+        // Show home section by default
+        document.addEventListener('DOMContentLoaded', () => {
+            showSection('home');
+        });
+
+        function toggleUseCase() {
+            const useCaseContent = document.getElementById('useCaseContent');
+            const useCaseToggle = document.querySelector('.use-case-toggle');
+            if (useCaseContent.style.display === 'none' || useCaseContent.style.display === '') {
+                useCaseContent.style.display = 'block';
+                useCaseToggle.innerHTML = 'Use Case &#9650;';
+            } else {
+                useCaseContent.style.display = 'none';
+                useCaseToggle.innerHTML = 'Use Case &#9660;';
             }
         }
     </script>
