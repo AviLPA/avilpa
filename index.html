@@ -284,6 +284,16 @@
             <input type="text" id="newWalletInput" placeholder="Enter new wallet address">
             <button type="button" onclick="reRunWithNewWallet()">Run this video with other wallet</button>
         </div>
+        <div class="test-video">
+            <h2>Test Video</h2>
+            <video width="400" controls>
+                <source src="https://drive.google.com/uc?export=download&id=1Fg3GR5xSoodixC9lk_s4vFjUTCYi3xmE" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="cta-buttons">
+                <a href="https://drive.google.com/uc?export=download&id=1Fg3GR5xSoodixC9lk_s4vFjUTCYi3xmE" class="cta" download>Download Video</a>
+            </div>
+        </div>
     </div>
     <div class="container-about section" id="about">
         <h1>About DocuLink</h1>
@@ -386,11 +396,6 @@
         <div id="comparisonResults" class="info-box"></div>
         <div id="comparisonVisual" class="info-box" style="overflow-y: scroll; height: 600px;"></div>
     </div>
-    <div class="container section" id="test"> <!-- New Test Section -->
-        <h1>Download Test Video</h1>
-        <p>Download the test video to try out the video comparison feature:</p>
-        <a href="https://drive.google.com/uc?export=download&id=1Fg3GR5xSoodixC9lk_s4vFjUTCYi3xmE" class="download-link">Download Test Video</a>
-    </div>
     <script>
         function showSection(sectionId) {
             document.querySelectorAll('.section').forEach(section => {
@@ -426,15 +431,17 @@
             const progressBar = document.getElementById('progressBar');
             const greenBox = document.getElementById('greenBox');
             const redBox = document.getElementById('redBox');
-            const walletBox = document.getElementById('wallet');
-            const hashBox = document.getElementById('hash');
+            const walletBox = document.getElementById('walletBox');
+            const walletSpan = document.getElementById('wallet');
+            const hashBox = document.getElementById('hashBox');
+            const hashSpan = document.getElementById('hash');
             const newWalletSection = document.getElementById('newWalletSection');
 
             progressBar.style.display = 'block';
             greenBox.style.display = 'none';
             redBox.style.display = 'none';
-            walletBox.textContent = '';
-            hashBox.textContent = '';
+            walletSpan.textContent = '';
+            hashSpan.textContent = '';
             newWalletSection.style.display = 'none';
 
             try {
@@ -445,8 +452,8 @@
                 });
 
                 const result = await response.json();
-                walletBox.textContent = result.wallet;
-                hashBox.textContent = result.hash;
+                walletSpan.textContent = result.wallet;
+                hashSpan.textContent = result.hash;
                 newWalletSection.style.display = 'block';
 
                 // Check for transaction status explicitly
@@ -481,8 +488,10 @@
             const progressBar = document.getElementById('progressBar');
             const greenBox = document.getElementById('greenBox');
             const redBox = document.getElementById('redBox');
-            const walletBox = document.getElementById('wallet');
-            const hashBox = document.getElementById('hash');
+            const walletBox = document.getElementById('walletBox');
+            const walletSpan = document.getElementById('wallet');
+            const hashBox = document.getElementById('hashBox');
+            const hashSpan = document.getElementById('hash');
 
             progressBar.style.display = 'block';
             greenBox.style.display = 'none';
@@ -496,8 +505,8 @@
                 });
 
                 const result = await response.json();
-                walletBox.textContent = result.wallet;
-                hashBox.textContent = result.hash;
+                walletSpan.textContent = result.wallet;
+                hashSpan.textContent = result.hash;
 
                 // Check for transaction status explicitly
                 if (result.message.includes("Transaction found")) {
@@ -523,14 +532,16 @@
             const progressBar = document.getElementById('searchProgressBar');
             const greenBox = document.getElementById('searchGreenBox');
             const redBox = document.getElementById('searchRedBox');
-            const walletBox = document.getElementById('searchWallet');
-            const hashBox = document.getElementById('searchHash');
+            const walletBox = document.getElementById('searchWalletBox');
+            const walletSpan = document.getElementById('searchWallet');
+            const hashBox = document.getElementById('searchHashBox');
+            const hashSpan = document.getElementById('searchHash');
 
             progressBar.style.display = 'block';
             greenBox.style.display = 'none';
             redBox.style.display = 'none';
-            walletBox.textContent = '';
-            hashBox.textContent = '';
+            walletSpan.textContent = '';
+            hashSpan.textContent = '';
 
             try {
                 startProgress('searchProgressBar', 'searchProgress');
@@ -540,8 +551,8 @@
                 });
 
                 const result = await response.json();
-                walletBox.textContent = result.wallet;
-                hashBox.textContent = result.hash;
+                walletSpan.textContent = result.wallet;
+                hashSpan.textContent = result.hash;
 
                 // Check for transaction status explicitly
                 if (result.message.includes("Transaction found")) {
