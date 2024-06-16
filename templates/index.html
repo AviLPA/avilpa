@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,25 +13,31 @@
             padding: 0;
             box-sizing: border-box;
         }
+        .header {
+            background-color: lightblue;
+            padding: 5px 20px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .header img {
+            width: 44px; /* Increased size by 10% */
+            height: auto;
+            margin-right: 10px;
+        }
+        .header .title {
+            color: black;
+            font-size: 26px; /* Increased size by 10% */
+            font-weight: bold;
+        }
         .navbar {
             background-color: lightblue;
             overflow: hidden;
-            padding: 5px 20px;
+            padding: 3px 20px; /* Shrunk the bar */
             display: flex;
             align-items: center;
-            justify-content: space-between;
-        }
-        .navbar img {
-            width: 40px;
-            height: auto;
-        }
-        .navbar .title {
-            color: black;
-            font-size: 24px;
-            font-weight: bold;
-            text-align: center;
-            flex: 1;
-            margin-left: 4cm;  /* Adjusted line */
+            justify-content: center;
         }
         .navbar .links {
             display: flex;
@@ -247,16 +254,20 @@
     </style>
 </head>
 <body>
-    <div class="navbar">
+    <div class="header">
         <img src="{{url_for('static', filename='chainicon.png')}}" alt="DocuLink Logo" />
         <div class="title">DocuLink</div>
+    </div>
+    <div class="navbar">
         <div class="links">
             <a id="homeLink" onclick="showSection('home')">Home</a>
             <a id="aboutLink" onclick="showSection('about')">About</a>
+            <a id="searchLink" onclick="showSection('search')">Search</a> <!-- New Search Tab -->
+            <a id="compareLink" onclick="showSection('compare')">Video Comparison</a> <!-- New Compare Tab -->
         </div>
     </div>
     <div class="container section" id="home">
-        <h1>Check Video Authenticity</h1>
+        <h1>Check Content Authenticity</h1>
         <div class="upload-box">
             <form id="uploadForm" enctype="multipart/form-data">
                 <input type="file" id="fileInput" name="file" accept="video/mp4,video/quicktime,image/png,image/jpeg">
@@ -270,7 +281,9 @@
         <div id="hashBox" class="info-box"></div>
         <div class="box green-box" id="greenBox"></div>
         <div class="box red-box" id="redBox"></div>
-        <div id="newWalletSection" style="display:none;">
+        <div
+
+ id="newWalletSection" style="display:none;">
             <input type="text" id="newWalletInput" placeholder="Enter new wallet address">
             <button type="button" onclick="reRunWithNewWallet()">Run this video with other wallet</button>
         </div>
@@ -345,6 +358,37 @@
             <p>This process ensures that your white paper for the SecureContent project is securely protected and its authenticity can be verified, deterring potential theft or alteration.</p>
         </div>
     </div>
+    <div class="container section" id="search"> <!-- New Search Section -->
+        <h1>Search VIA Content Metadata</h1>
+        <div class="upload-box">
+            <form id="searchForm" enctype="multipart/form-data">
+                <input type="file" id="searchFileInput" name="file" accept="video/mp4,video/quicktime,image/png,image/jpeg">
+                <button type="button" onclick="searchFile()">Search</button>
+            </form>
+            <div id="searchProgressBar">
+                <div id="searchProgress"></div>
+            </div>
+        </div>
+        <div id="searchWalletBox" class="info-box"></div>
+        <div id="searchHashBox" class="info-box"></div>
+        <div class="box green-box" id="searchGreenBox"></div>
+        <div class="box red-box" id="searchRedBox"></div>
+    </div>
+    <div class="container section" id="compare"> <!-- New Compare Section -->
+        <h1>Video Comparison</h1>
+        <div class="upload-box">
+            <form id="compareForm" enctype="multipart/form-data">
+                <input type="file" id="video1Input" name="video1" accept="video/mp4,video/quicktime" required>
+                <input type="file" id="video2Input" name="video2" accept="video/mp4,video/quicktime" required>
+                <button type="button" onclick="compareVideos()">Compare</button>
+            </form>
+            <div id="compareProgressBar">
+                <div id="compareProgress"></div>
+            </div>
+        </div>
+        <div id="comparisonResults" class="info-box"></div>
+        <div id="comparisonVisual" class="info-box" style="overflow-y: scroll; height: 600px;"></div>
+    </div>
     <script>
         function showSection(sectionId) {
             document.querySelectorAll('.section').forEach(section => {
@@ -357,9 +401,9 @@
             document.getElementById(sectionId + 'Link').classList.add('active');
         }
 
-        function startProgress() {
+        function startProgress(progressBarId, progressId) {
             const eventSource = new EventSource('/progress');
-            const progress = document.getElementById('progress');
+            const progress = document.getElementById(progressId);
 
             eventSource.onmessage = function(event) {
                 const data = event.data.split('|');
@@ -368,7 +412,9 @@
                 const progressPercent = Math.round((processedFrames / totalFrames) * 100);
                 progress.style.width = progressPercent + '%';
 
-                if (processedFrames >= totalFrames) {
+                if
+
+ (processedFrames >= totalFrames) {
                     eventSource.close();
                 }
             };
@@ -392,7 +438,7 @@
             newWalletSection.style.display = 'none';
 
             try {
-                startProgress();
+                startProgress('progressBar', 'progress');
                 const response = await fetch('/upload_file', {
                     method: 'POST',
                     body: formData,
@@ -443,7 +489,7 @@
             redBox.style.display = 'none';
 
             try {
-                startProgress();
+                startProgress('progressBar', 'progress');
                 const response = await fetch('/upload_file', {
                     method: 'POST',
                     body: formData,
@@ -468,6 +514,94 @@
                 progressBar.style.display = 'none';
                 redBox.style.display = 'block';
                 redBox.textContent = 'Error processing file';
+            }
+        }
+
+        async function searchFile() {
+            const form = document.getElementById('searchForm');
+            const formData = new FormData(form);
+            const progressBar = document.getElementById('searchProgressBar');
+            const greenBox = document.getElementById('searchGreenBox');
+            const redBox = document.getElementById('searchRedBox');
+            const walletBox = document.getElementById('searchWalletBox');
+            const hashBox = document.getElementById('searchHashBox');
+
+            progressBar.style.display = 'block';
+            greenBox.style.display = 'none';
+            redBox.style.display = 'none';
+            walletBox.textContent = '';
+            hashBox.textContent = '';
+
+            try {
+                startProgress('searchProgressBar', 'searchProgress');
+                const response = await fetch('/search_file', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const result = await response.json();
+                walletBox.textContent = `Wallet: ${result.wallet}`;
+                hashBox.textContent = `Hash: ${result.hash}`;
+
+                // Check for transaction status explicitly
+                if (result.message.includes("Transaction found")) {
+                    greenBox.textContent = result.message;
+                    greenBox.style.display = 'block';
+                    redBox.style.display = 'none';
+                } else {
+                    redBox.textContent = result.message;
+                    redBox.style.display = 'block';
+                    greenBox.style.display = 'none';
+                }
+
+            } catch (error) {
+                progressBar.style.display = 'none';
+                redBox.style.display = 'block';
+                redBox.textContent = 'Error processing file';
+            }
+        }
+
+        async function compareVideos() {
+            const form = document.getElementById('compareForm');
+            const formData = new FormData(form);
+            const progressBar = document.getElementById('compareProgressBar');
+            const resultsBox = document.getElementById('comparisonResults');
+            const visualBox = document.getElementById('comparisonVisual');
+
+            progressBar.style.display = 'block';
+            resultsBox.style.display = 'none';
+            visualBox.style.display = 'none';
+            resultsBox.textContent = '';
+            visualBox.textContent = '';
+
+            try {
+                startProgress('compareProgressBar', 'compareProgress');
+                const response = await fetch('/compare_videos', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const result = await response.json();
+                resultsBox.textContent = result.message;
+                resultsBox.style.display = 'block';
+
+                if (result.comparison_images && result.comparison_images.length > 0) {
+                    result.comparison_images.forEach(imagePath => {
+                        const img = document.createElement('img');
+                        img.src = imagePath;
+                        img.style.border = "2px solid red";
+                        img.style.margin = "10px";
+                        img.style.display = "block"; // Ensure each image is displayed as a block
+                        img.alt = `Frame ${imagePath.match(/frame_(\d+)\.jpg/)[1]}`;
+                        visualBox.appendChild(img);
+                    });
+                    visualBox.style.display = 'block';
+                }
+
+            } catch (error) {
+                progressBar.style.display = 'none';
+                resultsBox.textContent = 'Error processing videos';
+                resultsBox.style.display = 'block';
             }
         }
 
