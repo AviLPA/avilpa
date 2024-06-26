@@ -4,8 +4,7 @@
     <link rel="icon" href="{{url_for('static', filename='chainicon.png')}}" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DocuLink - Beta Version - Please Use Images For Example</title>
-<meta name="description" content="Videos for now are run on local server">
+    <title>DocuLink</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -251,6 +250,41 @@
             color: #007bff;
             margin-bottom: 10px;
         }
+        .list-section {
+            text-align: center;
+            margin: 20px;
+        }
+        .list-section h2 {
+            margin-bottom: 20px;
+        }
+        .hash-list {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: left;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .hash-list ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .hash-list li {
+            padding: 5px;
+            border-bottom: 1px solid #ccc;
+        }
+        .comparison-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        .comparison-container img {
+            max-width: 45%; /* Adjust the width to fit within the container */
+            height: auto;
+            border: 2px solid red;
+        }
     </style>
 </head>
 <body>
@@ -262,12 +296,13 @@
         <div class="links">
             <a id="homeLink" onclick="showSection('home')">Home</a>
             <a id="aboutLink" onclick="showSection('about')">About</a>
-            <a id="searchLink" onclick="showSection('search')">Search</a> <!-- New Search Tab -->
-            <a id="compareLink" onclick="showSection('compare')">Video Comparison</a> <!-- New Compare Tab -->
+            <a id="searchLink" onclick="showSection('search')">Search</a>
+            <a id="compareLink" onclick="showSection('compare')">Video Comparison</a>
+            <a id="listLink" onclick="showSection('list')">Add to List</a> <!-- Link to the new section -->
         </div>
     </div>
     <div class="container section" id="home">
-        <h1>Check Content Authenticity (For Now Use Images)</h1>
+        <h1>Check Content Authenticity</h1>
         <div class="upload-box">
             <form id="uploadForm" enctype="multipart/form-data">
                 <input type="file" id="fileInput" name="file" accept="video/mp4,video/quicktime,image/png,image/jpeg">
@@ -285,25 +320,35 @@
             <input type="text" id="newWalletInput" placeholder="Enter new wallet address">
             <button type="button" onclick="reRunWithNewWallet()">Run this video with other wallet</button>
         </div>
+        <div class="test-video">
+            <h2>Test Video</h2>
+            <video width="400" controls>
+                <source src="https://drive.google.com/uc?export=download&id=1Fg3GR5xSoodixC9lk_s4vFjUTCYi3xmE" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="cta-buttons">
+                <a href="https://drive.google.com/uc?export=download&id=1Fg3GR5xSoodixC9lk_s4vFjUTCYi3xmE" class="cta" download>Download Video</a>
+            </div>
+        </div>
     </div>
     <div class="container-about section" id="about">
         <h1>About DocuLink</h1>
-        <p>At DocuLink, we are dedicated to revolutionizing digital content verification through innovative blockchain technology. Our mission is to provide businesses with the tools they need to ensure the authenticity and integrity of their digital documents and media.</p>
+        <p>At DocuLink, we are dedicated to revolutionizing digital content verification through innovative blockchain technology. Our mission is to provide businesses, content creators, and organizations with the tools they need to ensure the authenticity and integrity of their digital documents and media. By integrating state-of-the-art cryptographic hashing and blockchain technology, we offer unparalleled security and trust in the digital world.</p>
         <h2>Our Vision</h2>
-        <p>We envision a world where digital content is trustworthy and verifiable, safeguarding against fraud and misinformation.</p>
+        <p>We envision a world where digital content is inherently trustworthy and verifiable, effectively safeguarding against fraud and misinformation. In an era where digital manipulation and deepfakes are increasingly sophisticated, our goal is to establish a universal standard of trust and reliability for digital content across various sectors including media, legal, and business industries. We believe that every digital interaction should be transparent, secure, and free from doubt.</p>
         <h2>Our Solution</h2>
         <p>DocuLink leverages advanced cryptographic techniques to create secure digital fingerprints for your content, recorded on an immutable blockchain. Here’s how we do it:</p>
         <ul>
-            <li><strong>Cryptographic Hashing:</strong> Each document or media file is processed through a cryptographic hash function, generating a unique digital fingerprint (hash) that represents the content's integrity.</li>
-            <li><strong>Blockchain Recording:</strong> The generated hash is recorded on a decentralized blockchain, ensuring an immutable and tamper-proof record of the content's authenticity.</li>
-            <li><strong>Verification Tools:</strong> We provide user-friendly tools that allow anyone to verify the authenticity of a document by recalculating its hash and comparing it to the blockchain record. This process confirms whether the content has been altered since its original recording.</li>
+            <li><strong>Cryptographic Hashing:</strong> Each document or media file is processed through a cryptographic hash function, generating a unique digital fingerprint (hash) that represents the content's integrity. This process ensures that even the smallest alteration to the content will result in a different hash, making any tampering instantly detectable.</li>
+            <li><strong>Blockchain Recording:</strong> The generated hash is recorded on a decentralized blockchain, ensuring an immutable and tamper-proof record of the content's authenticity. Blockchain technology provides a transparent and secure method for recording and verifying digital content, eliminating the risk of unauthorized alterations.</li>
+            <li><strong>Verification Tools:</strong> We provide user-friendly tools that allow anyone to verify the authenticity of a document by recalculating its hash and comparing it to the blockchain record. Our verification process is straightforward and efficient, enabling real-time verification with just a few clicks. These tools are designed to integrate seamlessly into your existing workflows, offering a hassle-free experience.</li>
         </ul>
         <h2>Why Choose Us</h2>
-        <p>Innovation: Cutting-edge technology for secure content verification.<br>
-        Trust: Building a trusted ecosystem for digital content.<br>
-        Security: Robust solutions to protect your intellectual property.</p>
+        <p>Innovation: Our platform employs cutting-edge technology to provide the most secure and efficient content verification solutions available. Our commitment to continuous improvement ensures that we stay ahead of emerging threats and advancements in digital content manipulation.<br>
+        Trust: DocuLink is dedicated to building a trusted ecosystem for digital content. By using our platform, you can be confident that your digital assets are protected against fraud and misinformation. We help you maintain the integrity of your content, which is crucial for establishing and preserving trust with your audience.<br>
+        Security: We offer robust solutions to protect your intellectual property from unauthorized alterations. Our platform uses end-to-end encryption, multi-signature wallets, and compliance with relevant data protection regulations to ensure your data is handled securely and legally.</p>
         <h2>Join Us</h2>
-        <p>Join us on our journey to create a more secure and transparent digital world. At DocuLink, we are committed to providing the highest level of security and trust for your digital content.</p>
+        <p>Join us on our journey to create a more secure and transparent digital world. At DocuLink, we are committed to providing the highest level of security and trust for your digital content. Whether you are a content creator, a business, or a legal firm, our platform offers the tools you need to ensure the integrity and authenticity of your digital assets. Let's work together to safeguard the future of digital content.</p>
         <h2 class="use-case-toggle" onclick="toggleUseCase()">Use Case &#9660;</h2>
         <div class="use-case-content" id="useCaseContent">
             <h3>Scenario: Protecting a White Paper for SecureContent Project</h3>
@@ -356,12 +401,12 @@
             <p>This process ensures that your white paper for the SecureContent project is securely protected and its authenticity can be verified, deterring potential theft or alteration.</p>
         </div>
     </div>
-    <div class="container section" id=""> <!-- New  Section -->
-        <h1>VIA Content Metadata - Not Functioning</h1>
+    <div class="container section" id="search"> <!-- New Search Section -->
+        <h1>Search VIA Content Metadata</h1>
         <div class="upload-box">
-            <form id="Form" enctype="multipart/form-data">
-                <input type="file" id="FileInput" name="file" accept="video/mp4,video/quicktime,image/png,image/jpeg">
-                <button type="button" onclick="File()"></button>
+            <form id="searchForm" enctype="multipart/form-data">
+                <input type="file" id="searchFileInput" name="file" accept="video/mp4,video/quicktime,image/png,image/jpeg">
+                <button type="button" onclick="searchFile()">Search</button>
             </form>
             <div id="searchProgressBar">
                 <div id="searchProgress"></div>
@@ -385,12 +430,24 @@
             </div>
         </div>
         <div id="comparisonResults" class="info-box"></div>
-        <div id="comparisonVisual" class="info-box" style="overflow-y: scroll; height: 600px;"></div>
+        <div id="comparisonVisual" class="comparison-container"></div>
     </div>
-    <div class="container section" id="test"> <!-- New Test Section -->
-        <h1>Download Test Video</h1>
-        <p>Download the test video to try out the video comparison feature:</p>
-        <a href="https://drive.google.com/uc?export=download&id=1Fg3GR5xSoodixC9lk_s4vFjUTCYi3xmE" class="download-link">Download Test Video</a>
+    <div class="container section" id="list"> <!-- New List Section -->
+        <h1>Add Video to List</h1>
+        <div class="upload-box">
+            <form id="listForm" enctype="multipart/form-data">
+                <input type="file" id="listFileInput" name="file" accept="video/mp4,video/quicktime,image/png,image/jpeg">
+                <button type="button" onclick="addToList()">Add to List</button>
+            </form>
+            <div id="listProgressBar">
+                <div id="listProgress"></div>
+            </div>
+        </div>
+        <div id="listMessage" class="info-box"></div>
+        <div class="hash-list" id="hashList">
+            <h3>Running List of Hashes</h3>
+            <ul id="hashListContent"></ul>
+        </div>
     </div>
     <script>
         function showSection(sectionId) {
@@ -427,15 +484,17 @@
             const progressBar = document.getElementById('progressBar');
             const greenBox = document.getElementById('greenBox');
             const redBox = document.getElementById('redBox');
-            const walletBox = document.getElementById('wallet');
-            const hashBox = document.getElementById('hash');
+            const walletBox = document.getElementById('walletBox');
+            const walletSpan = document.getElementById('wallet');
+            const hashBox = document.getElementById('hashBox');
+            const hashSpan = document.getElementById('hash');
             const newWalletSection = document.getElementById('newWalletSection');
 
             progressBar.style.display = 'block';
             greenBox.style.display = 'none';
             redBox.style.display = 'none';
-            walletBox.textContent = '';
-            hashBox.textContent = '';
+            walletSpan.textContent = '';
+            hashSpan.textContent = '';
             newWalletSection.style.display = 'none';
 
             try {
@@ -446,8 +505,8 @@
                 });
 
                 const result = await response.json();
-                walletBox.textContent = result.wallet;
-                hashBox.textContent = result.hash;
+                walletSpan.textContent = result.wallet;
+                hashSpan.textContent = result.hash;
                 newWalletSection.style.display = 'block';
 
                 // Check for transaction status explicitly
@@ -482,8 +541,10 @@
             const progressBar = document.getElementById('progressBar');
             const greenBox = document.getElementById('greenBox');
             const redBox = document.getElementById('redBox');
-            const walletBox = document.getElementById('wallet');
-            const hashBox = document.getElementById('hash');
+            const walletBox = document.getElementById('walletBox');
+            const walletSpan = document.getElementById('wallet');
+            const hashBox = document.getElementById('hashBox');
+            const hashSpan = document.getElementById('hash');
 
             progressBar.style.display = 'block';
             greenBox.style.display = 'none';
@@ -497,8 +558,8 @@
                 });
 
                 const result = await response.json();
-                walletBox.textContent = result.wallet;
-                hashBox.textContent = result.hash;
+                walletSpan.textContent = result.wallet;
+                hashSpan.textContent = result.hash;
 
                 // Check for transaction status explicitly
                 if (result.message.includes("Transaction found")) {
@@ -524,14 +585,16 @@
             const progressBar = document.getElementById('searchProgressBar');
             const greenBox = document.getElementById('searchGreenBox');
             const redBox = document.getElementById('searchRedBox');
-            const walletBox = document.getElementById('searchWallet');
-            const hashBox = document.getElementById('searchHash');
+            const walletBox = document.getElementById('searchWalletBox');
+            const walletSpan = document.getElementById('searchWallet');
+            const hashBox = document.getElementById('searchHashBox');
+            const hashSpan = document.getElementById('searchHash');
 
             progressBar.style.display = 'block';
             greenBox.style.display = 'none';
             redBox.style.display = 'none';
-            walletBox.textContent = '';
-            hashBox.textContent = '';
+            walletSpan.textContent = '';
+            hashSpan.textContent = '';
 
             try {
                 startProgress('searchProgressBar', 'searchProgress');
@@ -541,8 +604,8 @@
                 });
 
                 const result = await response.json();
-                walletBox.textContent = result.wallet;
-                hashBox.textContent = result.hash;
+                walletSpan.textContent = result.wallet;
+                hashSpan.textContent = result.hash;
 
                 // Check for transaction status explicitly
                 if (result.message.includes("Transaction found")) {
@@ -587,16 +650,15 @@
                 resultsBox.style.display = 'block';
 
                 if (result.comparison_images && result.comparison_images.length > 0) {
-                    result.comparison_images.forEach(imagePath => {
-                        const img = document.createElement('img');
-                        img.src = imagePath;
-                        img.style.border = "2px solid red";
-                        img.style.margin = "10px";
-                        img.style.display = "block"; // Ensure each image is displayed as a block
-                        img.alt = `Frame ${imagePath.match(/frame_(\d+)\.jpg/)[1]}`;
-                        visualBox.appendChild(img);
+                    result.comparison_images.forEach(imagePair => {
+                        const frame1 = document.createElement('img');
+                        frame1.src = imagePair[0];
+                        const frame2 = document.createElement('img');
+                        frame2.src = imagePair[1];
+                        visualBox.appendChild(frame1);
+                        visualBox.appendChild(frame2);
                     });
-                    visualBox.style.display = 'block';
+                    visualBox.style.display = 'flex';
                 }
 
             } catch (error) {
@@ -606,7 +668,43 @@
             }
         }
 
-        // Show home section by default
+        async function addToList() {
+            const form = document.getElementById('listForm');
+            const formData = new FormData(form);
+            const progressBar = document.getElementById('listProgressBar');
+            const progress = document.getElementById('listProgress');
+            const messageBox = document.getElementById('listMessage');
+            const hashList = document.getElementById('hashListContent');
+
+            progressBar.style.display = 'block';
+            messageBox.style.display = 'none';
+            progress.style.width = '0';
+
+            try {
+                startProgress('listProgressBar', 'listProgress');
+                const response = await fetch('/add_to_list', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    const newHash = document.createElement('li');
+                    newHash.textContent = `File: ${result.file} | Hash: ${result.hash}`;
+                    hashList.appendChild(newHash);
+                    messageBox.textContent = 'Hash added to list successfully.';
+                    messageBox.style.display = 'block';
+                } else {
+                    messageBox.textContent = 'Error adding hash to list.';
+                    messageBox.style.display = 'block';
+                }
+            } catch (error) {
+                progressBar.style.display = 'none';
+                messageBox.textContent = 'Error processing file';
+                messageBox.style.display = 'block';
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             showSection('home');
         });
@@ -625,3 +723,4 @@
     </script>
 </body>
 </html>
+
