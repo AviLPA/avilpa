@@ -5,722 +5,869 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DocuLink</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link rel="stylesheet" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Plus+Jakarta+Sans%3Awght%40400%3B500%3B700%3B800" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            background-color: #ffffff;
         }
-        .header {
-            background-color: lightblue;
-            padding: 5px 20px;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .subtitle {
+            font-size: 0.8em;
+            color: #555;
+            cursor: pointer;
+            text-decoration: underline;
         }
-        .header img {
-            width: 44px; /* Increased size by 10% */
-            height: auto;
-            margin-right: 10px;
-        }
-        .header .title {
-            color: black;
-            font-size: 26px; /* Increased size by 10% */
-            font-weight: bold;
-        }
-        .navbar {
-            background-color: lightblue;
-            overflow: hidden;
-            padding: 3px 20px; /* Shrunk the bar */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .navbar .links {
-            display: flex;
-            gap: 20px;
-        }
-        .navbar a {
-            color: black;
-            text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-        .navbar a:hover {
-            background-color: #85cddd;
-        }
-        .navbar a.active {
-            font-weight: bold;
-        }
+        .section { display: none; }
+        .section.active { display: block; }
+        .active-link { border-bottom: 3px solid #359EFF; color: #141414; }
+        .inactive-link { border-bottom: 3px solid transparent; color: #3E4D5B; }
+        .thumbnail { width: 100%; height: 85%; object-fit: cover; }
+        .comparison-container { display: flex; flex-direction: column; align-items: center; }
+        .comparison-item { display: flex; flex-direction: row; align-items: center; margin-bottom: 20px; }
+        .comparison-item img { max-width: 300px; margin: 0 10px; }
+        .difference { margin-right: 10px; }
+
         .container {
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            justify-content: center;
-            max-width: 600px;
-            margin: 10% auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            text-align: center;
-        }
-        .upload-box {
-            border: 1px solid #ccc;
-            padding: 20px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-        .info-box {
-            border: 1px solid #ccc;
-            padding: 10px;
-            border-radius: 5px;
-            margin: 10px 0;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-        }
-        .container h1 {
-            margin-bottom: 5%;
-            font-size: 24px; /* Adjust the size as needed */
-        }
-        .container form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .container input[type='file'] {
-            position: relative;
-            flex-direction: column;
-            justify-content: center;
-            margin-bottom: 10px;
-        }
-        input[type='file']::file-selector-button {
-            width: 136px;
-            color: transparent;
-        }
-        input[type='file']::before {
-            position: absolute;
-            pointer-events: none;
-            top: 10px;
-            left: 16px;
-            height: 20px;
-            width: 20px;
-            content: '';
-            background-image: url("{{url_for('static', filename='uploadicon.svg')}}");
-        }
-        input[type='file']::after {
-            position: absolute;
-            pointer-events: none;
-            top: 11px;
-            left: 40px;
-            color: #0964b0;
-            content: 'Upload File';
-        }
-        input[type='file']::file-selector-button {
-            border-radius: 4px;
-            padding: 0 16px;
-            height: 40px;
-            cursor: pointer;
-            background-color: white;
-            border: 1px solid rgba(0, 0, 0, 0.16);
-            box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.05);
-            margin-right: 16px;
-            transition: background-color 200ms;
-        }
-        input[type='file']::file-selector-button:hover {
-            background-color: #f3f4f6;
-        }
-        input[type='file']::file-selector-button:active {
-            background-color: #e5e7eb;
-        }
-        .container button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 20px;
-            background-color: lightblue;
-            color: black;
-            font-size: 16px;
-            cursor: pointer;
-            box-shadow: 2px 2px 5px #aaa;
-            margin-top: 10px;
-        }
-        .container button:hover {
-            background-color: #007bff;
-            color: white;
-        }
-        #progressBar {
-            width: 100%;
-            background-color: #f3f4f6;
-            border-radius: 5px;
-            margin: 20px 0;
-            display: none;
-        }
-        #progress {
-            height: 20px;
-            width: 0;
-            background-color: #4caf50;
-            border-radius: 5px;
-        }
-        .box {
-            padding: 10px;
-            border-radius: 5px;
-            margin: 10px 0;
-            display: none;
-        }
-        .green-box {
-            background-color: #d4edda;
-            color: #155724;
-        }
-        .red-box {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-        .section {
-            display: none;
             padding: 40px 20px;
         }
-        .section.active {
-            display: block;
+        .section-content {
+            margin-bottom: 40px;
         }
-        .container-about {
+        .section-content h2 {
+            color: #0056b3;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        .section-content p {
+            color: #333;
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .feature-box {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10px;
+            flex: 1;
+            min-width: 200px;
+            max-width: 240px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .feature-box h3 {
+            color: #007bff;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        .cta-section {
+            background-color: #0056b3;
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+        }
+        .cta-section h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        .cta-section p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .cta-section .cta-button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .about-container {
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
-            text-align: center;
-            color: #333;
         }
-        .container-about h1 {
-            color: #007bff;
-            font-size: 32px;
+        .about-section {
             margin-bottom: 20px;
         }
-        .container-about p {
-            font-size: 18px;
-            line-height: 1.8;
-            margin-bottom: 20px;
-        }
-        .container-about h2 {
+        .about-section h2 {
             color: #0056b3;
             font-size: 24px;
-            margin-bottom: 15px;
+            font-weight: 700;
+            margin-bottom: 10px;
         }
-        .container-about ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 20px 0;
-            text-align: left;
+        .about-section p {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 10px;
         }
-        .container-about ul li {
-            font-size: 18px;
-            margin-bottom: 15px;
-            padding-left: 20px;
-            position: relative;
+
+        body {
+            font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;
+            background-color: #f4f4f9;
         }
-        .container-about ul li::before {
-            content: '•';
-            color: #007bff;
-            position: absolute;
-            left: 0;
-            font-size: 20px;
-            line-height: 1.2;
-        }
-        .use-case-toggle {
-            cursor: pointer;
-            color: #007bff;
-            text-decoration: underline;
-            font-weight: bold;
-        }
-        .use-case-content {
-            display: none;
-            margin-top: 20px;
+        .flowchart-container {
+            width: 80%;
+            max-width: 1000px;
+            background-color: white;
             padding: 20px;
-            background-color: #f9f9f9;
             border-radius: 8px;
-            text-align: left;
-        }
-        .use-case-content h3 {
-            font-size: 20px;
-            color: #0056b3;
-            margin-bottom: 10px;
-        }
-        .use-case-content h4 {
-            font-size: 18px;
-            color: #007bff;
-            margin-bottom: 10px;
-        }
-        .list-section {
-            text-align: center;
-            margin: 20px;
-        }
-        .list-section h2 {
-            margin-bottom: 20px;
-        }
-        .hash-list {
-            max-width: 600px;
-            margin: 0 auto;
-            text-align: left;
-            border: 1px solid #ccc;
-            padding: 10px;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-        }
-        .hash-list ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        .hash-list li {
-            padding: 5px;
-            border-bottom: 1px solid #ccc;
-        }
-        .comparison-container {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
+            justify-content: space-around;
+            margin: 20px auto;
         }
-        .comparison-container img {
-            max-width: 45%; /* Adjust the width to fit within the container */
-            height: auto;
-            border: 2px solid red;
+        .flowchart {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            align-items: center;
+            position: relative;
+        }
+        .flowchart-step {
+            background: linear-gradient(to bottom right, #007bff, #00c6ff);
+            color: white;
+            padding: 10px;
+            border-radius: 50%;
+            text-align: center;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            font-size: 12px;
+        }
+        .arrow {
+            width: 0;
+            height: 0;
+            border-style: solid;
+            position: absolute;
+        }
+        .arrow.right {
+            border-width: 10px 0 10px 10px;
+            border-color: transparent transparent transparent #007bff;
+            top: 50%;
+            right: -20px;
+            transform: translateY(-50%);
+        }
+        .arrow.down {
+            border-width: 10px 10px 0 10px;
+            border-color: #007bff transparent transparent transparent;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .arrow.left {
+            border-width: 10px 10px 10px 0;
+            border-color: transparent #007bff transparent transparent;
+            top: 50%;
+            left: -20px;
+            transform: translateY(-50%);
+        }
+        .arrow.up {
+            border-width: 0 10px 10px 10px;
+            border-color: transparent transparent #007bff transparent;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .section-title {
+            grid-column: span 3;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <img src="{{url_for('static', filename='chainicon.png')}}" alt="DocuLink Logo" />
-        <div class="title">DocuLink</div>
-    </div>
-    <div class="navbar">
-        <div class="links">
-            <a id="homeLink" onclick="showSection('home')">Home</a>
-            <a id="aboutLink" onclick="showSection('about')">About</a>
-            <a id="searchLink" onclick="showSection('search')">Search</a>
-            <a id="compareLink" onclick="showSection('compare')">Video Comparison</a>
-            <a id="listLink" onclick="showSection('list')">Add to List</a> <!-- Link to the new section -->
-        </div>
-    </div>
-    <div class="container section" id="home">
-        <h1>Check Content Authenticity</h1>
-        <div class="upload-box">
-            <form id="uploadForm" enctype="multipart/form-data">
-                <input type="file" id="fileInput" name="file" accept="video/mp4,video/quicktime,image/png,image/jpeg">
-                <button type="button" onclick="uploadFile()">Upload</button>
-            </form>
-            <div id="progressBar">
-                <div id="progress"></div>
+    <div class="relative flex size-full min-h-screen flex-col bg-[#FFFFFF] justify-between group/design-root overflow-x-hidden">
+        <div>
+            <div class="flex items-center bg-[#FFFFFF] p-4 pb-2 justify-between">
+                <img src="{{url_for('static', filename='chainicon.png')}}" alt="DocuLink Logo" class="w-11 h-auto mr-2" />
+                <div>
+                    <h2 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] flex-1">DocuLink</h2>
+                    <p class="subtitle" onclick="copyToClipboard('addr1qyqmdurljd7v07rketnnc3udc9w547pya7v8jnh6zalrymyn84lfn88ypr4p6lvkaqwq46h2g67whtnenlpv2w9jvads3d458l')">Wallet Address: addr1qyqmdurljd7v07rketnnc3udc9w547pya7v8jnh6zalrymyn84lfn88ypr4p6lvkaqwq46h2g67whtnenlpv2w9jvads3d458l</p>
+                </div>
+            </div>
+            <div class="pb-3">
+                <div class="flex border-b border-[#DBE1E6] px-4 justify-between">
+                    <a id="homeLink" class="inactive-link flex flex-col items-center justify-center pb-[13px] pt-4 flex-1 cursor-pointer" onclick="showSection('home')">
+                        <p class="text-sm font-bold leading-normal tracking-[0.015em]">Home</p>
+                    </a>
+                    <a id="authenticateLink" class="inactive-link flex flex-col items-center justify-center pb-[13px] pt-4 flex-1 cursor-pointer" onclick="showSection('authenticate')">
+                        <p class="text-sm font-bold leading-normal tracking-[0.015em]">Authenticate</p>
+                    </a>
+                    <a id="aboutLink" class="inactive-link flex flex-col items-center justify-center pb-[13px] pt-4 flex-1 cursor-pointer" onclick="showSection('about')">
+                        <p class="text-sm font-bold leading-normal tracking-[0.015em]">About</p>
+                    </a>
+                    <a id="searchLink" class="inactive-link flex flex-col items-center justify-center pb-[13px] pt-4 flex-1 cursor-pointer" onclick="showSection('search')">
+                        <p class="text-sm font-bold leading-normal tracking-[0.015em]">Search</p>
+                    </a>
+                    <a id="compareLink" class="inactive-link flex flex-col items-center justify-center pb-[13px] pt-4 flex-1 cursor-pointer" onclick="showSection('compare')">
+                        <p class="text-sm font-bold leading-normal tracking-[0.015em]">Video Comparison</p>
+                    </a>
+                    <a id="listLink" class="inactive-link flex flex-col items-center justify-center pb-[13px] pt-4 flex-1 cursor-pointer" onclick="showSection('list')">
+                        <p class="text-sm font-bold leading-normal tracking-[0.015em]">Add to List</p>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Landing Page Section -->
+            <div class="section active" id="home">
+                <div class="container text-center">
+                    <div class="section-content">
+                        <h2>Welcome to Trust</h2>
+                        <p>DocuLink aims to provide a robust and user-friendly platform for verifying the authenticity of digital content using blockchain technology. By leveraging cryptographic hashing and decentralized blockchain records, DocuLink ensures that digital materials such as videos, images, and documents are traceable back to their original source, offering unparalleled security and trust in the digital age.</p>
+                    </div>
+                    <div class="section-content">
+                        <h2>Our Solution</h2>
+                        <div class="features">
+                            <div class="feature-box">
+                                <h3>Cryptographic Hashing</h3>
+                                <p>Generate unique hashes for digital content to create a digital fingerprint.</p>
+                            </div>
+                            <div class="feature-box">
+                                <h3>Blockchain Recording</h3>
+                                <p>Store these hashes on the blockchain for immutable and transparent records.</p>
+                            </div>
+                            <div class="feature-box">
+                                <h3>User-Friendly Verification</h3>
+                                <p>A simple UI for verifying content authenticity with a single click.</p>
+                            </div>
+                            <div class="feature-box">
+                                <h3>Re-Authentication</h3>
+                                <p>Re-upload content to check the metadata, hash, and wallet address for a match.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-content">
+                        <h2>Flowchart for Document Verification</h2>
+                        <div class="flowchart-container">
+                            <div class="flowchart">
+                                <div class="section-title">User Process</div>
+                                <div class="flowchart-step">User Creates Document</div>
+                                <div class="arrow right"></div>
+                                <div class="flowchart-step">Upload Document to DocuLink</div>
+                                <div class="arrow right"></div>
+                                <div class="flowchart-step">Generate Hash via DocuLink</div>
+                                <div class="arrow down"></div>
+                                <div class="flowchart-step">Upload Hash to Blockchain via DocuLink</div>
+                                <div class="arrow right"></div>
+                                <div class="flowchart-step">Document Distribution</div>
+                                
+                                <div class="section-title">Recipient Process</div>
+                                <div class="flowchart-step">Recipient Downloads Document</div>
+                                <div class="arrow right"></div>
+                                <div class="flowchart-step">Upload Document to DocuLink for Verification</div>
+                                <div class="arrow right"></div>
+                                <div class="flowchart-step">Recalculate Hash via DocuLink</div>
+                                <div class="arrow down"></div>
+                                <div class="flowchart-step">Compare Hashes via DocuLink</div>
+                                <div class="arrow right"></div>
+                                <div class="flowchart-step">Verification Result</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cta-section">
+                        <h2>Join Us</h2>
+                        <p>Join us on our journey to create a more secure and transparent digital world. At DocuLink, we are committed to providing the highest level of security and trust for your digital content.</p>
+                        <a href="#" class="cta-button" onclick="showSection('authenticate')">Get Started</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Authenticate Section -->
+            <div class="section" id="authenticate">
+                <h1 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] text-center">Check Content Authenticity</h1>
+                <div class="flex justify-center py-4">
+                    <div class="flex flex-col items-center gap-3 max-w-[480px] w-full px-4 py-3">
+                        <div id="thumbnail" class="w-full h-40 border border-gray-200 flex items-center justify-center mb-4">
+                            <p class="text-gray-400">No file uploaded</p>
+                        </div>
+                        <form id="uploadForm" enctype="multipart/form-data" class="w-full flex flex-col items-center">
+                            <input type="file" id="fileInput" name="file" accept="video/mp4,video/quicktime,image/png,image/jpeg" class="hidden" onchange="showThumbnail(this)">
+                            <label for="fileInput" class="flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-[#F0F2F5] text-[#141414] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
+                                <span class="truncate">Choose File</span>
+                            </label>
+                            <button type="button" onclick="uploadFile()" class="mt-4 flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 flex-1 bg-[#359EFF] text-[#FFFFFF] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
+                                <span class="truncate">Upload</span>
+                            </button>
+                        </form>
+                        <div id="progressBar" class="w-full h-5 bg-[#F3F4F6] mt-4 rounded-full overflow-hidden hidden">
+                            <div id="progress" class="h-full bg-[#359EFF] w-0"></div>
+                        </div>
+                        <div id="infoBox" class="w-full mt-4 p-4 border border-gray-200 rounded">
+                            <p class="font-bold">Wallet: <span id="wallet"></span></p>
+                            <p class="font-bold">Hash: <span id="hash"></span></p>
+                            <p id="endMessage" class="mt-2"></p>
+                        </div>
+                        <div id="newWalletSection" class="w-full mt-4 hidden">
+                            <input type="text" id="newWalletInput" placeholder="Enter new wallet address" class="w-full p-2 border border-gray-200 rounded mb-2">
+                            <button type="button" onclick="reRunWithNewWallet()" class="flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 flex-1 bg-[#359EFF] text-[#FFFFFF] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
+                                <span class="truncate">Run this video with other wallet</span>
+                            </button>
+                        </div>
+                        <div class="w-full mt-4 flex justify-center">
+                            <div class="test-video">
+                                <h2 class="text-center">Test Video</h2>
+                                <video width="200" controls>
+                                    <source src="https://drive.google.com/uc?export=download&id=1Fg3GR5xSoodixC9lk_s4vFjUTCYi3xmE" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                                <div class="cta-buttons mt-2">
+                                    <a href="https://drive.google.com/uc?export=download&id=1Fg3GR5xSoodixC9lk_s4vFjUTCYi3xmE" class="cta text-center block" download>Download Video</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- About Section -->
+            <div class="section" id="about">
+                <div class="about-container">
+                    <div class="about-section">
+                        <h2>About DocuLink</h2>
+                        <p>At DocuLink, we are dedicated to revolutionizing digital content verification through innovative blockchain technology. Our mission is to provide businesses, content creators, and organizations with the tools they need to ensure the authenticity and integrity of their digital documents and media. By integrating state-of-the-art cryptographic hashing and blockchain technology, we offer unparalleled security and trust in the digital world.</p>
+                    </div>
+                    <div class="about-section">
+                        <h2>Our Vision</h2>
+                        <p>We envision a world where digital content is inherently trustworthy and verifiable, effectively safeguarding against fraud and misinformation. In an era where digital manipulation and deepfakes are increasingly sophisticated, our goal is to establish a universal standard of trust and reliability for digital content across various sectors including media, legal, and business industries. We believe that every digital interaction should be transparent, secure, and free from doubt.</p>
+                    </div>
+                    <div class="about-section">
+                        <h2>Our Solution</h2>
+                        <p>DocuLink leverages advanced cryptographic techniques to create secure digital fingerprints for your content, recorded on an immutable blockchain. Here’s how we do it:</p>
+                        <ul>
+                            <li><strong>Cryptographic Hashing:</strong> Each document or media file is processed through a cryptographic hash function, generating a unique digital fingerprint (hash) that represents the content's integrity. This process ensures that even the smallest alteration to the content will result in a different hash, making any tampering instantly detectable.</li>
+                            <li><strong>Blockchain Recording:</strong> The generated hash is recorded on a decentralized blockchain, ensuring an immutable and tamper-proof record of the content's authenticity. Blockchain technology provides a transparent and secure method for recording and verifying digital content, eliminating the risk of unauthorized alterations.</li>
+                            <li><strong>Verification Tools:</strong> We provide user-friendly tools that allow anyone to verify the authenticity of a document by recalculating its hash and comparing it to the blockchain record. Our verification process is straightforward and efficient, enabling real-time verification with just a few clicks. These tools are designed to integrate seamlessly into your existing workflows, offering a hassle-free experience.</li>
+                        </ul>
+                    </div>
+                    <div class="about-section">
+                        <h2>Why Choose Us</h2>
+                        <p><strong>Innovation:</strong> Our platform employs cutting-edge technology to provide the most secure and efficient content verification solutions available. Our commitment to continuous improvement ensures that we stay ahead of emerging threats and advancements in digital content manipulation.</p>
+                        <p><strong>Trust:</strong> DocuLink is dedicated to building a trusted ecosystem for digital content. By using our platform, you can be confident that your digital assets are protected against fraud and misinformation. We help you maintain the integrity of your content, which is crucial for establishing and preserving trust with your audience.</p>
+                        <p><strong>Security:</strong> We offer robust solutions to protect your intellectual property from unauthorized alterations. Our platform uses end-to-end encryption, multi-signature wallets, and compliance with relevant data protection regulations to ensure your data is handled securely and legally.</p>
+                    </div>
+                    <div class="about-section">
+                        <h2>Join Us</h2>
+                        <p>Join us on our journey to create a more secure and transparent digital world. At DocuLink, we are committed to providing the highest level of security and trust for your digital content. Whether you are a content creator, a business, or a legal firm, our platform offers the tools you need to ensure the integrity and authenticity of your digital assets. Let's work together to safeguard the future of digital content.</p>
+                        <h2 class="use-case-toggle text-[#007bff] cursor-pointer underline font-bold px-4 pb-2 pt-4 text-center" onclick="toggleUseCase()">Use Case &#9660;</h2>
+                        <div class="use-case-content bg-[#f9f9f9] rounded-lg p-4 text-[#333] hidden" id="useCaseContent">
+                            <h3 class="text-[#0056b3] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Scenario: Protecting a White Paper for SecureContent Project</h3>
+                            <h4 class="text-[#007bff] text-base font-bold leading-normal tracking-[0.015em] px-4 pb-2 pt-4">Challenge:</h4>
+                            <p class="text-[#333] text-base font-normal leading-normal pb-3 pt-1 px-4">You have created a detailed white paper for your DocuLink project, which outlines the innovative use of blockchain for digital content verification. You need to ensure that the white paper remains secure and can be proven authentic if someone attempts to steal or alter it.</p>
+                            <h4 class="text-[#007bff] text-base font-bold leading-normal tracking-[0.015em] px-4 pb-2 pt-4">Solution Implementation:</h4>
+                            <p class="text-[#333] text-base font-normal leading-normal pb-3 pt-1 px-4"><strong>Document Creation and Hash Generation:</strong></p>
+                            <ul class="text-[#333] text-base font-normal leading-normal pb-3 pt-1 px-4 list-disc list-inside">
+                                <li><strong>White Paper Creation:</strong> You finalize the white paper detailing the DocuLink project, including all technical specifications and business strategies.</li>
+                                <li><strong>Hash Generation:</strong> You use a cryptographic hash function (SHA-256) to generate a hash of the white paper document. This hash serves as a digital fingerprint of your document.</li>
+                            </ul>
+                            <p class="text-[#333] text-base font-normal leading-normal pb-3 pt-1 px-4"><strong>Hash Publication and Distribution:</strong></p>
+                            <ul class="text-[#333] text-base font-normal leading-normal pb-3 pt-1 px-4 list-disc list-inside">
+                                <li><strong>Hash Publication:</strong> You publish the hash value of the white paper on your official website and other verified channels. This establishes a public record of the document’s authenticity.</li>
+                                <li><strong>Document Distribution:</strong> You distribute the white paper to stakeholders, investors, and potential partners. The document includes instructions on how to verify its authenticity using the published hash.</li>
+                            </ul>
+                            <p class="text-[#333] text-base font-normal leading-normal pb-3 pt-1 px-4"><strong>Verification Process:</strong></p>
+                            <ul class="text-[#333] text-base font-normal leading-normal pb-3 pt-1 px-4 list-disc list-inside">
+                                <li><strong>Hash Verification:</strong> Recipients can download the white paper and recalculate the hash of the document. They compare this recalculated hash with the published hash value.</li>
+                                <li><strong>Results:</strong> If the hashes match, recipients are assured that the white paper is authentic and unaltered. If there’s a mismatch, it indicates potential tampering.</li>
+                            </ul>
+                            <h4 class="text-[#007bff] text-base font-bold leading-normal tracking-[0.015em] px-4 pb-2 pt-4">Example Scenario:</h4>
+                            <p class="text-[#333] text-base font-normal leading-normal pb-3 pt-1 px-4"><strong>Document Protection:</strong></p>
+                            <ul class="text-[#333] text-base font-normal leading-normal pb-3 pt-1 px-4 list-disc list-inside">
+                                <li><strong>You:</strong> Finalize the white paper for the SecureContent project.</li>
+                                <li><strong>Hash Generation:</strong> Generate a SHA-256 hash of the white paper:
+                                    <br>Hash: abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234
+                                </li>
+                                <li><strong>Hash Publication:</strong> Publish the hash value on your official website and share it through your verified communication channels.</li>
+                            </ul>
+                            <p class="text-[#333] text-base font-normal leading-normal pb-3 pt-1 px-4"><strong>Attempted Theft and Verification:</strong></p>
+                            <ul class="text-[#333] text-base font-normal leading-normal pb-3 pt-1 px-4 list-disc list-inside">
+                                <li><strong>Thief:</strong> An individual attempts to steal and alter your white paper, making unauthorized changes to the document.</li>
+                                <li><strong>Altered Document:</strong> The altered document has a different hash value when recalculated:
+                                    <br>Altered Hash: 1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234
+                                </li>
+                                <li><strong>Stakeholder:</strong> A recipient of the white paper verifies the document by recalculating the hash:
+                                    <br>Recalculated Hash: abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234
+                                </li>
+                                <li><strong>Verification Result:</strong> The recalculated hash matches the original published hash:
+                                    <br>Original Hash: abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234
+                                </li>
+                            </ul>
+                            <h4 class="text-[#007bff] text-base font-bold leading-normal tracking-[0.015em] px-4 pb-2 pt-4">Outcome:</h4>
+                            <ul class="text-[#333] text-base font-normal leading-normal pb-3 pt-1 px-4 list-disc list-inside">
+                                <li><strong>Security:</strong> The white paper remains secure, and any alterations can be easily detected.</li>
+                                <li><strong>Trust:</strong> Stakeholders have confidence in the authenticity of your document.</li>
+                                <li><strong>Integrity:</strong> You protect your intellectual property from theft and unauthorized changes.</li>
+                            </ul>
+                            <p class="text-[#333] text-base font-normal leading-normal pb-3 pt-1 px-4">This process ensures that your white paper for the SecureContent project is securely protected and its authenticity can be verified, deterring potential theft or alteration.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Section -->
+            <div class="section" id="search">
+                <h1 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] text-center">Search VIA Content Metadata</h1>
+                <div class="flex justify-center py-4">
+                    <div class="flex flex-col items-center gap-3 max-w-[480px] w-full px-4 py-3">
+                        <form id="searchForm" enctype="multipart/form-data" class="w-full flex flex-col items-center">
+                            <input type="file" id="searchFileInput" name="file" accept="video/mp4,video/quicktime,image/png,image/jpeg" class="hidden" onchange="showSearchThumbnail(this)">
+                            <label for="searchFileInput" class="flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-[#F0F2F5] text-[#141414] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
+                                <span class="truncate">Choose Video</span>
+                            </label>
+                            <button type="button" onclick="searchFile()" class="mt-4 flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 flex-1 bg-[#359EFF] text-[#FFFFFF] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
+                                <span class="truncate">Run Search</span>
+                            </button>
+                        </form>
+                        <div id="searchProgressBar" class="w-full h-5 bg-[#F3F4F6] mt-4 rounded-full overflow-hidden hidden">
+                            <div id="searchProgress" class="h-full bg-[#359EFF] w-0"></div>
+                        </div>
+                        <div id="searchInfoBox" class="w-full mt-4 p-4 border border-gray-200 rounded">
+                            <p class="font-bold">Wallet: <span id="searchWallet"></span></p>
+                            <p class="font-bold">Hash: <span id="searchHash"></span></p>
+                            <p id="searchEndMessage" class="mt-2"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Comparison Section -->
+            <div class="section" id="compare">
+                <h1 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] text-center">Video Comparison</h1>
+                <div class="flex justify-center py-4">
+                    <div class="flex flex-col items-center gap-3 max-w-[480px] w-full px-4 py-3">
+                        <form id="compareForm" enctype="multipart/form-data" class="w-full flex flex-col items-center">
+                            <div class="flex justify-between w-full mb-4">
+                                <div class="flex flex-col items-center w-1/2 pr-2">
+                                    <input type="file" id="video1Input" name="video1" accept="video/mp4,video/quicktime" class="hidden" onchange="showVideoFileName(this, 'thumbnail1')" required>
+                                    <label for="video1Input" class="flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-[#F0F2F5] text-[#141414] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
+                                        <span class="truncate">Upload File</span>
+                                    </label>
+                                    <div id="thumbnail1" class="w-full h-20 border border-gray-200 flex items-center justify-center mt-2">
+                                        <p class="text-gray-400">No file uploaded</p>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col items-center w-1/2 pl-2">
+                                    <input type="file" id="video2Input" name="video2" accept="video/mp4,video/quicktime" class="hidden" onchange="showVideoFileName(this, 'thumbnail2')" required>
+                                    <label for="video2Input" class="flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-[#F0F2F5] text-[#141414] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
+                                        <span class="truncate">Upload File</span>
+                                    </label>
+                                    <div id="thumbnail2" class="w-full h-20 border border-gray-200 flex items-center justify-center mt-2">
+                                        <p class="text-gray-400">No file uploaded</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" onclick="compareVideos()" class="mt-4 flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 flex-1 bg-[#359EFF] text-[#FFFFFF] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
+                                <span class="truncate">Compare</span>
+                            </button>
+                        </form>
+                        <div id="compareProgressBar" class="w-full h-5 bg-[#F3F4F6] mt-4 rounded-full overflow-hidden hidden">
+                            <div id="compareProgress" class="h-full bg-[#359EFF] w-0"></div>
+                        </div>
+                        <div id="comparisonResults" class="info-box w-full mt-4 p-4 border border-gray-200 rounded hidden"></div>
+                        <div class="explanation mt-4 w-full">
+                            <h3 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] text-center">Explanation of Red Boxes:</h3>
+                            <p class="text-[#141414] text-base font-normal leading-normal text-center">The red boxes highlight areas of difference between the two videos. These differences are areas where the content has changed between the two versions. The percentage shown indicates the proportion of the frame that is different.</p>
+                        </div>
+                        <div id="comparisonVisual" class="comparison-container w-full mt-4 flex justify-center hidden"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add to List Section -->
+            <div class="section" id="list">
+                <h1 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] text-center">Add Video to List</h1>
+                <div class="flex justify-center py-4">
+                    <div class="flex flex-col items-center gap-3 max-w-[480px] w-full px-4 py-3">
+                        <form id="listForm" enctype="multipart/form-data" class="w-full flex flex-col items-center">
+                            <input type="file" id="listFileInput" name="file" accept="video/mp4,video/quicktime,image/png,image/jpeg" class="hidden" onchange="showListThumbnail(this)">
+                            <label for="listFileInput" class="flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-[#F0F2F5] text-[#141414] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
+                                <span class="truncate">Choose File</span>
+                            </label>
+                            <button type="button" onclick="addToList()" class="mt-4 flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 flex-1 bg-[#359EFF] text-[#FFFFFF] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
+                                <span class="truncate">Add</span>
+                            </button>
+                        </form>
+                        <div id="listProgressBar" class="w-full h-5 bg-[#F3F4F6] mt-4 rounded-full overflow-hidden hidden">
+                            <div id="listProgress" class="h-full bg-[#359EFF] w-0"></div>
+                        </div>
+                        <div id="listMessage" class="info-box w-full mt-4 p-4 border border-gray-200 rounded hidden"></div>
+                        <div class="hash-list w-full mt-4 p-4 border border-gray-200 rounded">
+                            <h3 class="text-center">Running List of Hashes</h3>
+                            <ul id="hashListContent"></ul>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div id="walletBox" class="info-box">Wallet: <span id="wallet"></span></div>
-        <div id="hashBox" class="info-box">Hash: <span id="hash"></span></div>
-        <div class="box green-box" id="greenBox"></div>
-        <div class="box red-box" id="redBox"></div>
-        <div id="newWalletSection" style="display:none;">
-            <input type="text" id="newWalletInput" placeholder="Enter new wallet address">
-            <button type="button" onclick="reRunWithNewWallet()">Run this video with other wallet</button>
-        </div>
-        <div class="test-video">
-            <h2>Test Video</h2>
-            <video width="400" controls>
-                <source src="https://drive.google.com/uc?export=download&id=1Fg3GR5xSoodixC9lk_s4vFjUTCYi3xmE" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-            <div class="cta-buttons">
-                <a href="https://drive.google.com/uc?export=download&id=1Fg3GR5xSoodixC9lk_s4vFjUTCYi3xmE" class="cta" download>Download Video</a>
-            </div>
-        </div>
-    </div>
-    <div class="container-about section" id="about">
-        <h1>About DocuLink</h1>
-        <p>At DocuLink, we are dedicated to revolutionizing digital content verification through innovative blockchain technology. Our mission is to provide businesses, content creators, and organizations with the tools they need to ensure the authenticity and integrity of their digital documents and media. By integrating state-of-the-art cryptographic hashing and blockchain technology, we offer unparalleled security and trust in the digital world.</p>
-        <h2>Our Vision</h2>
-        <p>We envision a world where digital content is inherently trustworthy and verifiable, effectively safeguarding against fraud and misinformation. In an era where digital manipulation and deepfakes are increasingly sophisticated, our goal is to establish a universal standard of trust and reliability for digital content across various sectors including media, legal, and business industries. We believe that every digital interaction should be transparent, secure, and free from doubt.</p>
-        <h2>Our Solution</h2>
-        <p>DocuLink leverages advanced cryptographic techniques to create secure digital fingerprints for your content, recorded on an immutable blockchain. Here’s how we do it:</p>
-        <ul>
-            <li><strong>Cryptographic Hashing:</strong> Each document or media file is processed through a cryptographic hash function, generating a unique digital fingerprint (hash) that represents the content's integrity. This process ensures that even the smallest alteration to the content will result in a different hash, making any tampering instantly detectable.</li>
-            <li><strong>Blockchain Recording:</strong> The generated hash is recorded on a decentralized blockchain, ensuring an immutable and tamper-proof record of the content's authenticity. Blockchain technology provides a transparent and secure method for recording and verifying digital content, eliminating the risk of unauthorized alterations.</li>
-            <li><strong>Verification Tools:</strong> We provide user-friendly tools that allow anyone to verify the authenticity of a document by recalculating its hash and comparing it to the blockchain record. Our verification process is straightforward and efficient, enabling real-time verification with just a few clicks. These tools are designed to integrate seamlessly into your existing workflows, offering a hassle-free experience.</li>
-        </ul>
-        <h2>Why Choose Us</h2>
-        <p>Innovation: Our platform employs cutting-edge technology to provide the most secure and efficient content verification solutions available. Our commitment to continuous improvement ensures that we stay ahead of emerging threats and advancements in digital content manipulation.<br>
-        Trust: DocuLink is dedicated to building a trusted ecosystem for digital content. By using our platform, you can be confident that your digital assets are protected against fraud and misinformation. We help you maintain the integrity of your content, which is crucial for establishing and preserving trust with your audience.<br>
-        Security: We offer robust solutions to protect your intellectual property from unauthorized alterations. Our platform uses end-to-end encryption, multi-signature wallets, and compliance with relevant data protection regulations to ensure your data is handled securely and legally.</p>
-        <h2>Join Us</h2>
-        <p>Join us on our journey to create a more secure and transparent digital world. At DocuLink, we are committed to providing the highest level of security and trust for your digital content. Whether you are a content creator, a business, or a legal firm, our platform offers the tools you need to ensure the integrity and authenticity of your digital assets. Let's work together to safeguard the future of digital content.</p>
-        <h2 class="use-case-toggle" onclick="toggleUseCase()">Use Case &#9660;</h2>
-        <div class="use-case-content" id="useCaseContent">
-            <h3>Scenario: Protecting a White Paper for SecureContent Project</h3>
-            <h4>Challenge:</h4>
-            <p>You have created a detailed white paper for your DocuLink project, which outlines the innovative use of blockchain for digital content verification. You need to ensure that the white paper remains secure and can be proven authentic if someone attempts to steal or alter it.</p>
-            <h4>Solution Implementation:</h4>
-            <p><strong>Document Creation and Hash Generation:</strong></p>
-            <ul>
-                <li><strong>White Paper Creation:</strong> You finalize the white paper detailing the DocuLink project, including all technical specifications and business strategies.</li>
-                <li><strong>Hash Generation:</strong> You use a cryptographic hash function (SHA-256) to generate a hash of the white paper document. This hash serves as a digital fingerprint of your document.</li>
-            </ul>
-            <p><strong>Hash Publication and Distribution:</strong></p>
-            <ul>
-                <li><strong>Hash Publication:</strong> You publish the hash value of the white paper on your official website and other verified channels. This establishes a public record of the document’s authenticity.</li>
-                <li><strong>Document Distribution:</strong> You distribute the white paper to stakeholders, investors, and potential partners. The document includes instructions on how to verify its authenticity using the published hash.</li>
-            </ul>
-            <p><strong>Verification Process:</strong></p>
-            <ul>
-                <li><strong>Hash Verification:</strong> Recipients can download the white paper and recalculate the hash of the document. They compare this recalculated hash with the published hash value.</li>
-                <li><strong>Results:</strong> If the hashes match, recipients are assured that the white paper is authentic and unaltered. If there’s a mismatch, it indicates potential tampering.</li>
-            </ul>
-            <h4>Example Scenario:</h4>
-            <p><strong>Document Protection:</strong></p>
-            <ul>
-                <li><strong>You:</strong> Finalize the white paper for the SecureContent project.</li>
-                <li><strong>Hash Generation:</strong> Generate a SHA-256 hash of the white paper:
-                    <br>Hash: abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234
-                </li>
-                <li><strong>Hash Publication:</strong> Publish the hash value on your official website and share it through your verified communication channels.</li>
-            </ul>
-            <p><strong>Attempted Theft and Verification:</strong></p>
-            <ul>
-                <li><strong>Thief:</strong> An individual attempts to steal and alter your white paper, making unauthorized changes to the document.</li>
-                <li><strong>Altered Document:</strong> The altered document has a different hash value when recalculated:
-                    <br>Altered Hash: 1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234
-                </li>
-                <li><strong>Stakeholder:</strong> A recipient of the white paper verifies the document by recalculating the hash:
-                    <br>Recalculated Hash: abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234
-                </li>
-                <li><strong>Verification Result:</strong> The recalculated hash matches the original published hash:
-                    <br>Original Hash: abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234
-                </li>
-            </ul>
-            <h4>Outcome:</h4>
-            <ul>
-                <li><strong>Security:</strong> The white paper remains secure, and any alterations can be easily detected.</li>
-                <li><strong>Trust:</strong> Stakeholders have confidence in the authenticity of your document.</li>
-                <li><strong>Integrity:</strong> You protect your intellectual property from theft and unauthorized changes.</li>
-            </ul>
-            <p>This process ensures that your white paper for the SecureContent project is securely protected and its authenticity can be verified, deterring potential theft or alteration.</p>
-        </div>
-    </div>
-    <div class="container section" id="search"> <!-- New Search Section -->
-        <h1>Search VIA Content Metadata</h1>
-        <div class="upload-box">
-            <form id="searchForm" enctype="multipart/form-data">
-                <input type="file" id="searchFileInput" name="file" accept="video/mp4,video/quicktime,image/png,image/jpeg">
-                <button type="button" onclick="searchFile()">Search</button>
-            </form>
-            <div id="searchProgressBar">
-                <div id="searchProgress"></div>
-            </div>
-        </div>
-        <div id="searchWalletBox" class="info-box">Wallet: <span id="searchWallet"></span></div>
-        <div id="searchHashBox" class="info-box">Hash: <span id="searchHash"></span></div>
-        <div class="box green-box" id="searchGreenBox"></div>
-        <div class="box red-box" id="searchRedBox"></div>
-    </div>
-    <div class="container section" id="compare"> <!-- New Compare Section -->
-        <h1>Video Comparison</h1>
-        <div class="upload-box">
-            <form id="compareForm" enctype="multipart/form-data">
-                <input type="file" id="video1Input" name="video1" accept="video/mp4,video/quicktime" required>
-                <input type="file" id="video2Input" name="video2" accept="video/mp4,video/quicktime" required>
-                <button type="button" onclick="compareVideos()">Compare</button>
-            </form>
-            <div id="compareProgressBar">
-                <div id="compareProgress"></div>
-            </div>
-        </div>
-        <div id="comparisonResults" class="info-box"></div>
-        <div id="comparisonVisual" class="comparison-container"></div>
-    </div>
-    <div class="container section" id="list"> <!-- New List Section -->
-        <h1>Add Video to List</h1>
-        <div class="upload-box">
-            <form id="listForm" enctype="multipart/form-data">
-                <input type="file" id="listFileInput" name="file" accept="video/mp4,video/quicktime,image/png,image/jpeg">
-                <button type="button" onclick="addToList()">Add to List</button>
-            </form>
-            <div id="listProgressBar">
-                <div id="listProgress"></div>
-            </div>
-        </div>
-        <div id="listMessage" class="info-box"></div>
-        <div class="hash-list" id="hashList">
-            <h3>Running List of Hashes</h3>
-            <ul id="hashListContent"></ul>
-        </div>
-    </div>
-    <script>
-        function showSection(sectionId) {
-            document.querySelectorAll('.section').forEach(section => {
-                section.classList.remove('active');
-            });
-            document.getElementById(sectionId).classList.add('active');
-            document.querySelectorAll('.navbar a').forEach(link => {
-                link.classList.remove('active');
-            });
-            document.getElementById(sectionId + 'Link').classList.add('active');
-        }
-
-        function startProgress(progressBarId, progressId) {
-            const eventSource = new EventSource('/progress');
-            const progress = document.getElementById(progressId);
-
-            eventSource.onmessage = function(event) {
-                const data = event.data.split('|');
-                const processedFrames = parseInt(data[0]);
-                const totalFrames = parseInt(data[1]);
-                const progressPercent = Math.round((processedFrames / totalFrames) * 100);
-                progress.style.width = progressPercent + '%';
-
-                if (processedFrames >= totalFrames) {
-                    eventSource.close();
-                }
-            };
-        }
-
-        async function uploadFile() {
-            const form = document.getElementById('uploadForm');
-            const formData = new FormData(form);
-            const progressBar = document.getElementById('progressBar');
-            const greenBox = document.getElementById('greenBox');
-            const redBox = document.getElementById('redBox');
-            const walletBox = document.getElementById('walletBox');
-            const walletSpan = document.getElementById('wallet');
-            const hashBox = document.getElementById('hashBox');
-            const hashSpan = document.getElementById('hash');
-            const newWalletSection = document.getElementById('newWalletSection');
-
-            progressBar.style.display = 'block';
-            greenBox.style.display = 'none';
-            redBox.style.display = 'none';
-            walletSpan.textContent = '';
-            hashSpan.textContent = '';
-            newWalletSection.style.display = 'none';
-
-            try {
-                startProgress('progressBar', 'progress');
-                const response = await fetch('/upload_file', {
-                    method: 'POST',
-                    body: formData,
+        <script>
+            function showSection(sectionId) {
+                document.querySelectorAll('.section').forEach(section => {
+                    section.classList.remove('active');
                 });
-
-                const result = await response.json();
-                walletSpan.textContent = result.wallet;
-                hashSpan.textContent = result.hash;
-                newWalletSection.style.display = 'block';
-
-                // Check for transaction status explicitly
-                if (result.message.includes("Transaction found")) {
-                    greenBox.textContent = result.message;
-                    greenBox.style.display = 'block';
-                    redBox.style.display = 'none';
-                } else {
-                    redBox.textContent = result.message;
-                    redBox.style.display = 'block';
-                    greenBox.style.display = 'none';
-                }
-
-            } catch (error) {
-                progressBar.style.display = 'none';
-                redBox.style.display = 'block';
-                redBox.textContent = 'Error processing file';
-            }
-        }
-
-        async function reRunWithNewWallet() {
-            const newWalletAddress = document.getElementById('newWalletInput').value;
-            if (!newWalletAddress) {
-                alert('Please enter a new wallet address.');
-                return;
-            }
-
-            const form = document.getElementById('uploadForm');
-            const formData = new FormData(form);
-            formData.append('newWallet', newWalletAddress);
-
-            const progressBar = document.getElementById('progressBar');
-            const greenBox = document.getElementById('greenBox');
-            const redBox = document.getElementById('redBox');
-            const walletBox = document.getElementById('walletBox');
-            const walletSpan = document.getElementById('wallet');
-            const hashBox = document.getElementById('hashBox');
-            const hashSpan = document.getElementById('hash');
-
-            progressBar.style.display = 'block';
-            greenBox.style.display = 'none';
-            redBox.style.display = 'none';
-
-            try {
-                startProgress('progressBar', 'progress');
-                const response = await fetch('/upload_file', {
-                    method: 'POST',
-                    body: formData,
+                document.getElementById(sectionId).classList.add('active');
+                document.querySelectorAll('.navbar a').forEach(link => {
+                    link.classList.remove('active-link');
+                    link.classList.add('inactive-link');
                 });
-
-                const result = await response.json();
-                walletSpan.textContent = result.wallet;
-                hashSpan.textContent = result.hash;
-
-                // Check for transaction status explicitly
-                if (result.message.includes("Transaction found")) {
-                    greenBox.textContent = result.message;
-                    greenBox.style.display = 'block';
-                    redBox.style.display = 'none';
-                } else {
-                    redBox.textContent = result.message;
-                    redBox.style.display = 'block';
-                    greenBox.style.display = 'none';
-                }
-
-            } catch (error) {
-                progressBar.style.display = 'none';
-                redBox.style.display = 'block';
-                redBox.textContent = 'Error processing file';
+                document.getElementById(sectionId + 'Link').classList.add('active-link');
+                document.getElementById(sectionId + 'Link').classList.remove('inactive-link');
             }
-        }
 
-        async function searchFile() {
-            const form = document.getElementById('searchForm');
-            const formData = new FormData(form);
-            const progressBar = document.getElementById('searchProgressBar');
-            const greenBox = document.getElementById('searchGreenBox');
-            const redBox = document.getElementById('searchRedBox');
-            const walletBox = document.getElementById('searchWalletBox');
-            const walletSpan = document.getElementById('searchWallet');
-            const hashBox = document.getElementById('searchHashBox');
-            const hashSpan = document.getElementById('searchHash');
+            function startProgress(progressBarId, progressId) {
+                const eventSource = new EventSource('/progress');
+                const progress = document.getElementById(progressId);
 
-            progressBar.style.display = 'block';
-            greenBox.style.display = 'none';
-            redBox.style.display = 'none';
-            walletSpan.textContent = '';
-            hashSpan.textContent = '';
+                eventSource.onmessage = function(event) {
+                    const data = event.data.split('|');
+                    const processedFrames = parseInt(data[0]);
+                    const totalFrames = parseInt(data[1]);
+                    const progressPercent = Math.round((processedFrames / totalFrames) * 100);
+                    progress.style.width = progressPercent + '%';
 
-            try {
-                startProgress('searchProgressBar', 'searchProgress');
-                const response = await fetch('/search_file', {
-                    method: 'POST',
-                    body: formData,
-                });
-
-                const result = await response.json();
-                walletSpan.textContent = result.wallet;
-                hashSpan.textContent = result.hash;
-
-                // Check for transaction status explicitly
-                if (result.message.includes("Transaction found")) {
-                    greenBox.textContent = result.message;
-                    greenBox.style.display = 'block';
-                    redBox.style.display = 'none';
-                } else {
-                    redBox.textContent = result.message;
-                    redBox.style.display = 'block';
-                    greenBox.style.display = 'none';
-                }
-
-            } catch (error) {
-                progressBar.style.display = 'none';
-                redBox.style.display = 'block';
-                redBox.textContent = 'Error processing file';
+                    if (processedFrames >= totalFrames) {
+                        eventSource.close();
+                    }
+                };
             }
-        }
 
-        async function compareVideos() {
-            const form = document.getElementById('compareForm');
-            const formData = new FormData(form);
-            const progressBar = document.getElementById('compareProgressBar');
-            const resultsBox = document.getElementById('comparisonResults');
-            const visualBox = document.getElementById('comparisonVisual');
+            function showThumbnail(input) {
+                const file = input.files[0];
+                const reader = new FileReader();
 
-            progressBar.style.display = 'block';
-            resultsBox.style.display = 'none';
-            visualBox.style.display = 'none';
-            resultsBox.textContent = '';
-            visualBox.textContent = '';
+                reader.onload = function(e) {
+                    const thumbnail = document.getElementById('thumbnail');
+                    thumbnail.innerHTML = `<img src="${e.target.result}" alt="Thumbnail" class="thumbnail">`;
+                };
 
-            try {
-                startProgress('compareProgressBar', 'compareProgress');
-                const response = await fetch('/compare_videos', {
-                    method: 'POST',
-                    body: formData,
-                });
+                reader.readAsDataURL(file);
+            }
 
-                const result = await response.json();
-                resultsBox.textContent = result.message;
-                resultsBox.style.display = 'block';
+            function showSearchThumbnail(input) {
+                const file = input.files[0];
+                const reader = new FileReader();
 
-                if (result.comparison_images && result.comparison_images.length > 0) {
-                    result.comparison_images.forEach(imagePair => {
-                        const frame1 = document.createElement('img');
-                        frame1.src = imagePair[0];
-                        const frame2 = document.createElement('img');
-                        frame2.src = imagePair[1];
-                        visualBox.appendChild(frame1);
-                        visualBox.appendChild(frame2);
+                reader.onload = function(e) {
+                    const thumbnail = document.getElementById('searchThumbnail');
+                    thumbnail.innerHTML = `<img src="${e.target.result}" alt="Thumbnail" class="thumbnail">`;
+                };
+
+                reader.readAsDataURL(file);
+            }
+
+            function showVideoFileName(input, thumbnailId) {
+                const file = input.files[0];
+                const thumbnail = document.getElementById(thumbnailId);
+                thumbnail.innerHTML = `<p>${file.name}</p>`;
+            }
+
+            function showListThumbnail(input) {
+                const file = input.files[0];
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const thumbnail = document.getElementById('listThumbnail');
+                    thumbnail.innerHTML = `<img src="${e.target.result}" alt="Thumbnail" class="thumbnail">`;
+                };
+
+                reader.readAsDataURL(file);
+            }
+
+            async function uploadFile() {
+                const form = document.getElementById('uploadForm');
+                const formData = new FormData(form);
+                const progressBar = document.getElementById('progressBar');
+                const progress = document.getElementById('progress');
+                const infoBox = document.getElementById('infoBox');
+                const walletSpan = document.getElementById('wallet');
+                const hashSpan = document.getElementById('hash');
+                const endMessage = document.getElementById('endMessage');
+                const newWalletSection = document.getElementById('newWalletSection');
+
+                progressBar.classList.remove('hidden');
+                progress.style.width = '0';
+                infoBox.classList.add('hidden');
+                walletSpan.textContent = '';
+                hashSpan.textContent = '';
+                endMessage.textContent = '';
+                newWalletSection.classList.add('hidden');
+
+                try {
+                    startProgress('progressBar', 'progress');
+                    const response = await fetch('/upload_file', {
+                        method: 'POST',
+                        body: formData,
                     });
-                    visualBox.style.display = 'flex';
+
+                    const result = await response.json();
+                    walletSpan.textContent = result.wallet;
+                    hashSpan.textContent = result.hash;
+                    newWalletSection.classList.remove('hidden');
+                    infoBox.classList.remove('hidden');
+
+                    if (result.message.includes("Transaction found")) {
+                        endMessage.textContent = result.message;
+                        endMessage.classList.add('text-green-500');
+                        endMessage.classList.remove('text-red-500');
+                    } else {
+                        endMessage.textContent = result.message;
+                        endMessage.classList.add('text-red-500');
+                        endMessage.classList.remove('text-green-500');
+                    }
+
+                } catch (error) {
+                    progressBar.classList.add('hidden');
+                    endMessage.textContent = 'Error processing file';
+                    endMessage.classList.add('text-red-500');
+                    endMessage.classList.remove('text-green-500');
+                    infoBox.classList.remove('hidden');
+                }
+            }
+
+            async function reRunWithNewWallet() {
+                const newWalletAddress = document.getElementById('newWalletInput').value;
+                if (!newWalletAddress) {
+                    alert('Please enter a new wallet address.');
+                    return;
                 }
 
-            } catch (error) {
-                progressBar.style.display = 'none';
-                resultsBox.textContent = 'Error processing videos';
-                resultsBox.style.display = 'block';
+                const form = document.getElementById('uploadForm');
+                const formData = new FormData(form);
+                formData.append('newWallet', newWalletAddress);
+
+                const progressBar = document.getElementById('progressBar');
+                const progress = document.getElementById('progress');
+                const infoBox = document.getElementById('infoBox');
+                const walletSpan = document.getElementById('wallet');
+                const hashSpan = document.getElementById('hash');
+                const endMessage = document.getElementById('endMessage');
+
+                progressBar.classList.remove('hidden');
+                progress.style.width = '0';
+                infoBox.classList.add('hidden');
+                walletSpan.textContent = '';
+                hashSpan.textContent = '';
+                endMessage.textContent = '';
+
+                try {
+                    startProgress('progressBar', 'progress');
+                    const response = await fetch('/upload_file', {
+                        method: 'POST',
+                        body: formData,
+                    });
+
+                    const result = await response.json();
+                    walletSpan.textContent = result.wallet;
+                    hashSpan.textContent = result.hash;
+                    infoBox.classList.remove('hidden');
+
+                    if (result.message.includes("Transaction found")) {
+                        endMessage.textContent = result.message;
+                        endMessage.classList.add('text-green-500');
+                        endMessage.classList.remove('text-red-500');
+                    } else {
+                        endMessage.textContent = result.message;
+                        endMessage.classList.add('text-red-500');
+                        endMessage.classList.remove('text-green-500');
+                    }
+
+                } catch (error) {
+                    progressBar.classList.add('hidden');
+                    endMessage.textContent = 'Error processing file';
+                    endMessage.classList.add('text-red-500');
+                    endMessage.classList.remove('text-green-500');
+                    infoBox.classList.remove('hidden');
+                }
             }
-        }
 
-        async function addToList() {
-            const form = document.getElementById('listForm');
-            const formData = new FormData(form);
-            const progressBar = document.getElementById('listProgressBar');
-            const progress = document.getElementById('listProgress');
-            const messageBox = document.getElementById('listMessage');
-            const hashList = document.getElementById('hashListContent');
+            async function searchFile() {
+                const form = document.getElementById('searchForm');
+                const formData = new FormData(form);
+                const progressBar = document.getElementById('searchProgressBar');
+                const progress = document.getElementById('searchProgress');
+                const infoBox = document.getElementById('searchInfoBox');
+                const walletSpan = document.getElementById('searchWallet');
+                const hashSpan = document.getElementById('searchHash');
+                const endMessage = document.getElementById('searchEndMessage');
 
-            progressBar.style.display = 'block';
-            messageBox.style.display = 'none';
-            progress.style.width = '0';
+                progressBar.classList.remove('hidden');
+                progress.style.width = '0';
+                infoBox.classList.add('hidden');
+                walletSpan.textContent = '';
+                hashSpan.textContent = '';
+                endMessage.textContent = '';
 
-            try {
-                startProgress('listProgressBar', 'listProgress');
-                const response = await fetch('/add_to_list', {
-                    method: 'POST',
-                    body: formData,
-                });
+                try {
+                    startProgress('searchProgressBar', 'searchProgress');
+                    const response = await fetch('/search_file', {
+                        method: 'POST',
+                        body: formData,
+                    });
 
-                const result = await response.json();
-                if (result.success) {
-                    const newHash = document.createElement('li');
-                    newHash.textContent = `File: ${result.file} | Hash: ${result.hash}`;
-                    hashList.appendChild(newHash);
-                    messageBox.textContent = 'Hash added to list successfully.';
-                    messageBox.style.display = 'block';
+                    const result = await response.json();
+                    walletSpan.textContent = result.wallet;
+                    hashSpan.textContent = result.hash;
+                    infoBox.classList.remove('hidden');
+
+                    if (result.message.includes("Transaction found")) {
+                        endMessage.textContent = result.message;
+                        endMessage.classList.add('text-green-500');
+                        endMessage.classList.remove('text-red-500');
+                    } else {
+                        endMessage.textContent = result.message;
+                        endMessage.classList.add('text-red-500');
+                        endMessage.classList.remove('text-green-500');
+                    }
+
+                } catch (error) {
+                    progressBar.classList.add('hidden');
+                    endMessage.textContent = 'Error processing file';
+                    endMessage.classList.add('text-red-500');
+                    endMessage.classList.remove('text-green-500');
+                    infoBox.classList.remove('hidden');
+                }
+            }
+
+            async function compareVideos() {
+                const form = document.getElementById('compareForm');
+                const formData = new FormData(form);
+                const progressBar = document.getElementById('compareProgressBar');
+                const progress = document.getElementById('compareProgress');
+                const resultsBox = document.getElementById('comparisonResults');
+                const visualBox = document.getElementById('comparisonVisual');
+
+                progressBar.classList.remove('hidden');
+                progress.style.width = '0';
+                resultsBox.classList.add('hidden');
+                visualBox.classList.add('hidden');
+                resultsBox.textContent = '';
+                visualBox.textContent = '';
+
+                try {
+                    startProgress('compareProgressBar', 'compareProgress');
+                    const response = await fetch('/compare_videos', {
+                        method: 'POST',
+                        body: formData,
+                    });
+
+                    const result = await response.json();
+                    resultsBox.textContent = result.message;
+                    resultsBox.classList.remove('hidden');
+
+                    if (result.comparison_images && result.comparison_images.length > 0) {
+                        result.comparison_images.forEach((imagePair, index) => {
+                            const comparisonItem = document.createElement('div');
+                            comparisonItem.className = 'comparison-item';
+
+                            const difference = document.createElement('div');
+                            difference.className = 'difference';
+                            difference.innerText = `Difference: ${result.differences[index].toFixed(2)}%`;
+
+                            const frame1 = document.createElement('img');
+                            frame1.src = imagePair[0];
+
+                            const frame2 = document.createElement('img');
+                            frame2.src = imagePair[1];
+
+                            comparisonItem.appendChild(difference);
+                            comparisonItem.appendChild(frame1);
+                            comparisonItem.appendChild(frame2);
+
+                            visualBox.appendChild(comparisonItem);
+                        });
+                        visualBox.classList.remove('hidden');
+                    }
+
+                } catch (error) {
+                    progressBar.classList.add('hidden');
+                    resultsBox.textContent = 'Error processing videos';
+                    resultsBox.classList.remove('hidden');
+                }
+            }
+
+            async function addToList() {
+                const form = document.getElementById('listForm');
+                const formData = new FormData(form);
+                const progressBar = document.getElementById('listProgressBar');
+                const progress = document.getElementById('listProgress');
+                const messageBox = document.getElementById('listMessage');
+                const hashList = document.getElementById('hashListContent');
+
+                progressBar.classList.remove('hidden');
+                messageBox.classList.add('hidden');
+                progress.style.width = '0';
+
+                try {
+                    startProgress('listProgressBar', 'listProgress');
+                    const response = await fetch('/add_to_list', {
+                        method: 'POST',
+                        body: formData,
+                    });
+
+                    const result = await response.json();
+                    if (result.success) {
+                        const newHash = document.createElement('li');
+                        newHash.textContent = `File: ${result.file} | Hash: ${result.hash}`;
+                        hashList.appendChild(newHash);
+                        messageBox.textContent = 'Hash added to list successfully.';
+                        messageBox.classList.remove('hidden');
+                    } else {
+                        messageBox.textContent = 'Error adding hash to list.';
+                        messageBox.classList.remove('hidden');
+                    }
+                } catch (error) {
+                    progressBar.classList.add('hidden');
+                    messageBox.textContent = 'Error processing file';
+                    messageBox.classList.remove('hidden');
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                showSection('home');
+            });
+
+            function toggleUseCase() {
+                const useCaseContent = document.getElementById('useCaseContent');
+                const useCaseToggle = document.querySelector('.use-case-toggle');
+                if (useCaseContent.style.display === 'none' || useCaseContent.style.display === '') {
+                    useCaseContent.style.display = 'block';
+                    useCaseToggle.innerHTML = 'Use Case &#9650;';
                 } else {
-                    messageBox.textContent = 'Error adding hash to list.';
-                    messageBox.style.display = 'block';
+                    useCaseContent.style.display = 'none';
+                    useCaseToggle.innerHTML = 'Use Case &#9660;';
                 }
-            } catch (error) {
-                progressBar.style.display = 'none';
-                messageBox.textContent = 'Error processing file';
-                messageBox.style.display = 'block';
             }
-        }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            showSection('home');
-        });
-
-        function toggleUseCase() {
-            const useCaseContent = document.getElementById('useCaseContent');
-            const useCaseToggle = document.querySelector('.use-case-toggle');
-            if (useCaseContent.style.display === 'none' || useCaseContent.style.display === '') {
-                useCaseContent.style.display = 'block';
-                useCaseToggle.innerHTML = 'Use Case &#9650;';
-            } else {
-                useCaseContent.style.display = 'none';
-                useCaseToggle.innerHTML = 'Use Case &#9660;';
+            function copyToClipboard(text) {
+                navigator.clipboard.writeText(text).then(function() {
+                    alert('Wallet address copied to clipboard!');
+                }, function(err) {
+                    console.error('Could not copy text: ', err);
+                });
             }
-        }
-    </script>
+        </script>
+    </div>
 </body>
 </html>
 
