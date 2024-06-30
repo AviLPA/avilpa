@@ -134,7 +134,7 @@
         }
         .flowchart {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: 20px;
             align-items: center;
             position: relative;
@@ -166,29 +166,8 @@
             right: -20px;
             transform: translateY(-50%);
         }
-        .arrow.down {
-            border-width: 10px 10px 0 10px;
-            border-color: #007bff transparent transparent transparent;
-            bottom: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        .arrow.left {
-            border-width: 10px 10px 10px 0;
-            border-color: transparent #007bff transparent transparent;
-            top: 50%;
-            left: -20px;
-            transform: translateY(-50%);
-        }
-        .arrow.up {
-            border-width: 0 10px 10px 10px;
-            border-color: transparent transparent #007bff transparent;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
         .section-title {
-            grid-column: span 3;
+            grid-column: span 5;
             font-size: 16px;
             font-weight: bold;
             text-align: center;
@@ -199,14 +178,16 @@
 <body>
     <div class="relative flex size-full min-h-screen flex-col bg-[#FFFFFF] justify-between group/design-root overflow-x-hidden">
         <div>
-            <div class="flex items-center bg-[#FFFFFF] p-4 pb-2 justify-between">
-                <img src="{{url_for('static', filename='chainicon.png')}}" alt="DocuLink Logo" class="w-11 h-auto mr-2" />
-                <div>
-                    <h2 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] flex-1">DocuLink</h2>
-                    <p class="subtitle" onclick="copyToClipboard('addr1qyqmdurljd7v07rketnnc3udc9w547pya7v8jnh6zalrymyn84lfn88ypr4p6lvkaqwq46h2g67whtnenlpv2w9jvads3d458l')">Wallet Address: addr1qyqmdurljd7v07rketnnc3udc9w547pya7v8jnh6zalrymyn84lfn88ypr4p6lvkaqwq46h2g67whtnenlpv2w9jvads3d458l</p>
+            <div class="flex items-center bg-[#FFFFFF] p-4 pb-2 justify-between fixed top-0 left-0 w-full z-10">
+                <div class="flex items-center">
+                    <img src="{{url_for('static', filename='chainicon.png')}}" alt="DocuLink Logo" class="w-11 h-auto mr-2" />
+                    <div>
+                        <h2 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] flex-1">DocuLink</h2>
+                        <p class="subtitle" onclick="copyToClipboard('addr1qyqmdurljd7v07rketnnc3udc9w547pya7v8jnh6zalrymyn84lfn88ypr4p6lvkaqwq46h2g67whtnenlpv2w9jvads3d458l')">Wallet Address: addr1qyqmdurljd7v07rketnnc3udc9w547pya7v8jnh6zalrymyn84lfn88ypr4p6lvkaqwq46h2g67whtnenlpv2w9jvads3d458l</p>
+                    </div>
                 </div>
             </div>
-            <div class="pb-3">
+            <div class="pt-16 pb-3">
                 <div class="flex border-b border-[#DBE1E6] px-4 justify-between">
                     <a id="homeLink" class="inactive-link flex flex-col items-center justify-center pb-[13px] pt-4 flex-1 cursor-pointer" onclick="showSection('home')">
                         <p class="text-sm font-bold leading-normal tracking-[0.015em]">Home</p>
@@ -268,7 +249,7 @@
                                 <div class="flowchart-step">Upload Document to DocuLink</div>
                                 <div class="arrow right"></div>
                                 <div class="flowchart-step">Generate Hash via DocuLink</div>
-                                <div class="arrow down"></div>
+                                <div class="arrow right"></div>
                                 <div class="flowchart-step">Upload Hash to Blockchain via DocuLink</div>
                                 <div class="arrow right"></div>
                                 <div class="flowchart-step">Document Distribution</div>
@@ -279,7 +260,7 @@
                                 <div class="flowchart-step">Upload Document to DocuLink for Verification</div>
                                 <div class="arrow right"></div>
                                 <div class="flowchart-step">Recalculate Hash via DocuLink</div>
-                                <div class="arrow down"></div>
+                                <div class="arrow right"></div>
                                 <div class="flowchart-step">Compare Hashes via DocuLink</div>
                                 <div class="arrow right"></div>
                                 <div class="flowchart-step">Verification Result</div>
@@ -308,6 +289,13 @@
                             <label for="fileInput" class="flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-[#F0F2F5] text-[#141414] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
                                 <span class="truncate">Choose File</span>
                             </label>
+                            <div class="w-full mt-4">
+                                <label for="walletInput" class="block text-sm font-bold mb-2">Wallet Address:</label>
+                                <input type="text" id="walletInput" name="wallet" placeholder="Enter wallet address" class="w-full p-2 border border-gray-200 rounded">
+                            </div>
+                            <div id="currentWallet" class="w-full mt-4">
+                                <p class="font-bold">Current Wallet: <span id="currentWalletAddress"></span></p>
+                            </div>
                             <button type="button" onclick="uploadFile()" class="mt-4 flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 flex-1 bg-[#359EFF] text-[#FFFFFF] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
                                 <span class="truncate">Upload</span>
                             </button>
@@ -604,6 +592,10 @@
                 const hashSpan = document.getElementById('hash');
                 const endMessage = document.getElementById('endMessage');
                 const newWalletSection = document.getElementById('newWalletSection');
+
+                const walletInput = document.getElementById('walletInput');
+                const currentWalletAddress = document.getElementById('currentWalletAddress');
+                currentWalletAddress.textContent = walletInput.value || 'Not provided';
 
                 progressBar.classList.remove('hidden');
                 progress.style.width = '0';
