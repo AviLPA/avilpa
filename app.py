@@ -113,44 +113,44 @@ def search_metadata_for_hash(wallet_address, hash_value):
     return None
 
 #def search_entire_blockchain_for_hash(hash_value):
-   # headers = {'project_id': API_KEY}
-   # page = 1
-   # while True:
-       # try:
-           # response = requests.get(f"{API_URL}/metadata/txs/labels?page={page}", headers=headers)
-            #response.raise_for_status()
-           # labels = response.json()
-           # if not labels:
-             #   break
-           # for label in labels:
-                #label_page = 1
-                #while True:
-                    metadata_response = requests.get(f"{API_URL}/metadata/txs/labels/{label['label']}?page={label_page}", headers=headers)
-                    metadata_response.raise_for_status()
-                    transactions = metadata_response.json()
-                   # if not transactions:
-                     #   break
-                    #for tx in transactions:
-                      #  if 'json_metadata' in tx:
-                           # json_metadata = tx['json_metadata']
-                           # if isinstance(json_metadata, dict):
-                               # for key, value in json_metadata.items():
-                                   # if isinstance(value, list) and hash_value in value:
-                                        #logging.debug("Transaction found with hash in metadata")
-                                        #return tx['tx_hash'], tx
-                                    #elif value == hash_value:
-                                        #logging.debug("Transaction found with hash in metadata")
-                                       # return tx['tx_hash'], tx
-                          #  elif isinstance(json_metadata, list):
-                               # if hash_value in json_metadata:
-                                    #logging.debug("Transaction found with hash in metadata")
-                                    #return tx['tx_hash'], tx
-                  #  label_page += 1
-        #    page += 1
-       # except requests.exceptions.RequestException as e:
-           # logging.error(f"Request exception: {e}")
-            #break
-    #return None
+#   headers = {'project_id': API_KEY}
+#   page = 1
+#    while True:
+#        try:
+#            response = requests.get(f"{API_URL}/metadata/txs/labels?page={page}", headers=headers)
+#            response.raise_for_status()
+#            labels = response.json()
+#            if not labels:
+#                break
+#            for label in labels:
+#                label_page = 1
+#                while True:
+#                    metadata_response = requests.get(f"{API_URL}/metadata/txs/labels/{label['label']}?page={label_page}", headers=headers)
+#                    metadata_response.raise_for_status()
+#                    transactions = metadata_response.json()
+#                    if not transactions:
+#                        break
+#                    for tx in transactions:
+#                        if 'json_metadata' in tx:
+#                            json_metadata = tx['json_metadata']
+#                            if isinstance(json_metadata, dict):
+#                                for key, value in json_metadata.items():
+#                                    if isinstance(value, list) and hash_value in value:
+#                                        logging.debug("Transaction found with hash in metadata")
+#                                        return tx['tx_hash'], tx
+#                                    elif value == hash_value:
+#                                        logging.debug("Transaction found with hash in metadata")
+#                                        return tx['tx_hash'], tx
+#                            elif isinstance(json_metadata, list):
+#                                if hash_value in json_metadata:
+#                                    logging.debug("Transaction found with hash in metadata")
+#                                    return tx['tx_hash'], tx
+#                    label_page += 1
+#            page += 1
+#        except requests.exceptions.RequestException as e:
+#            logging.error(f"Request exception: {e}")
+#            break
+#    return None
 
 def compare_videos(video1_path, video2_path, num_colors=8, target_resolution=(640, 480)):
     logging.debug(f"Comparing videos: {video1_path} and {video2_path}")
