@@ -63,46 +63,6 @@ def search_metadata_for_hash(wallet_address, hash_value):
             break
     return None
 
-# def search_entire_blockchain_for_hash(hash_value):
-#   headers = {'project_id': API_KEY}
-#   page = 1
-#   while True:
-#       try:
-#           response = requests.get(f"{API_URL}/metadata/txs/labels?page={page}", headers=headers)
-#            response.raise_for_status()
-#            labels = response.json()
-#            if not labels:
-#                break
-#            for label in labels:
-#                label_page = 1
-#                while True:
-#                    metadata_response = requests.get(f"{API_URL}/metadata/txs/labels/{label['label']}?page={label_page}", headers=headers)
-#                    metadata_response.raise_for_status()
-#                    transactions = metadata_response.json()
-#                    if not transactions:
-#                        break
-#                    for tx in transactions:
-#                        if 'json_metadata' in tx:
-#                            json_metadata = tx['json_metadata']
-#                            if isinstance(json_metadata, dict):
-#                                for key, value in json_metadata.items():
-#                                    if isinstance(value, list) and hash_value in value:
-#                                        logging.debug("Transaction found with hash in metadata")
-#                                        return tx['tx_hash'], tx
-#                                    elif value == hash_value:
-#                                        logging.debug("Transaction found with hash in metadata")
-#                                        return tx['tx_hash'], tx
-#                            elif isinstance(json_metadata, list):
-#                                if hash_value in json_metadata:
-#                                    logging.debug("Transaction found with hash in metadata")
-#                                    return tx['tx_hash'], tx
-#                    label_page += 1
-#            page += 1
-#        except requests.exceptions.RequestException as e:
-#            logging.error(f"Request exception: {e}")
-#            break
-#    return None
-
 def video_to_binary(video_path, num_colors=8, target_resolution=(640, 480)):
     logging.debug(f"Processing video: {video_path}")
     cap = cv2.VideoCapture(video_path)
@@ -128,6 +88,8 @@ def video_to_binary(video_path, num_colors=8, target_resolution=(640, 480)):
         frame_count += 1
         progress_data['processed_frames'] = frame_count
         logging.debug(f"Processed frame {frame_count}/{total_frames}")
+        # Release the frame to save memory
+        del frame, frame_image, frame_binary
         time.sleep(0.1)  # Simulate processing time
 
     cap.release()
@@ -255,9 +217,9 @@ def search_file():
         logging.debug(f"File saved to {file_path}")
 
         if file.filename.lower().endswith(('.png', '.jpg', '.jpeg')):
-            binary_code = process_image(file_path)
+            binary_code = image_to_binary(Image.open(file_path))
         elif file.filename.lower().endswith('.mp4'):
-            binary_code = "".join([frame.tobytes().decode('latin1') for frame in process_video(file_path)])
+            binary_code = video_to_binary(file_path)
         else:
             logging.error("Unsupported file type")
             return jsonify({'message': 'Unsupported file type.'})
@@ -403,9 +365,9 @@ def add_to_list():
         logging.debug(f"File saved to {file_path}")
 
         if file.filename.lower().endswith(('.png', '.jpg', '.jpeg')):
-            binary_code = process_image(file_path)
+            binary_code = image_to_binary(Image.open(file_path))
         elif file.filename.lower().endswith('.mp4'):
-            binary_code = "".join([frame.tobytes().decode('latin1') for frame in process_video(file_path)])
+            binary_code = video_to_binary(file_path)
         else:
             logging.error("Unsupported file type")
             return jsonify({'success': False, 'message': 'Unsupported file type.'})
@@ -433,5 +395,4 @@ if __name__ == '__main__':
     if not os.path.exists('comparisons'):
         os.makedirs('comparisons')
     app.run(debug=True, port=5009)
-
 
