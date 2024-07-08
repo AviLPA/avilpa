@@ -111,6 +111,11 @@
             font-weight: bold;
             font-size: 1.1em;
         }
+        .demo-link {
+            color: #359EFF;
+            text-decoration: underline;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -151,65 +156,67 @@
                     <div class="section-content">
                         <h2>Welcome to DocuLink</h2>
                         <p>We have moved our landing page and information to <a href="https://www.docuauth.info/" target="_blank" class="small-link">https://www.docuauth.info/</a></p>
+                        <p class="text-[#333] text-base font-normal leading-normal mt-4">
+                            For our Demos <a href="#" onclick="showSection('authenticate')" class="demo-link">Click Here</a>
+                        </p>
                     </div>
                 </div>
             </div>
 
             <!-- Authenticate Section -->
-<div class="section" id="authenticate">
-    <h1 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] text-center">Check Content Authenticity</h1>
-    <div class="flex justify-center py-4">
-        <div class="flex flex-col items-center gap-3 max-w-[480px] w-full px-4 py-3">
-            <p class="text-center">For testing, please download the test video provided at the bottom of this page.</p>
-            <div id="thumbnail" class="w-1/2 h-20 border border-gray-200 flex items-center justify-center mb-4">
-                <p class="text-gray-400">No file uploaded</p>
-            </div>
-            <form id="uploadForm" enctype="multipart/form-data" class="w-full flex flex-col items-center">
-                <input type="file" id="fileInput" name="file" accept="video/mp4,video/quicktime,image/png,image/jpeg" class="hidden" onchange="showThumbnail(this)">
-                <label for="fileInput" class="flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-[#F0F2F5] text-[#141414] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
-                    <span class="truncate">Choose File</span>
-                </label>
-                <div class="w-full mt-4">
-                    <label for="walletInput" class="block text-sm font-bold mb-2">Wallet Address:</label>
-                    <input type="text" id="walletInput" name="wallet" placeholder="Enter wallet address" class="w-full p-2 border border-gray-200 rounded">
-                </div>
-                <div id="currentWallet" class="w-full mt-4">
-                    <p class="font-bold">Current Wallet: <span id="currentWalletAddress"></span></p>
-                </div>
-                <button type="button" onclick="uploadFile()" class="mt-4 flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 flex-1 bg-[#359EFF] text-[#FFFFFF] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
-                    <span class="truncate">Upload</span>
-                </button>
-            </form>
-            <div id="progressBar" class="w-full h-5 bg-[#F3F4F6] mt-4 rounded-full overflow-hidden hidden">
-                <div id="progress" class="h-full bg-[#359EFF] w-0"></div>
-            </div>
-            <div id="infoBox" class="w-full mt-4 p-4 border border-gray-200 rounded">
-                <p class="font-bold">Wallet: <span id="wallet"></span></p>
-                <p class="font-bold">Hash: <span id="hash"></span></p>
-                <p id="endMessage" class="mt-2"></p>
-            </div>
-            <div id="newWalletSection" class="w-full mt-4 hidden">
-                <input type="text" id="newWalletInput" placeholder="Enter new wallet address" class="w-full p-2 border border-gray-200 rounded mb-2">
-                <button type="button" onclick="reRunWithNewWallet()" class="flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 flex-1 bg-[#359EFF] text-[#FFFFFF] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
-                    <span class="truncate">Run this video with other wallet</span>
-                </button>
-            </div>
-            <div class="w-full mt-4 flex justify-center">
-                <div class="test-video">
-                    <h2 class="text-center">Test Video</h2>
-                    <video width="200" controls>
-                        <source src="https://drive.google.com/uc?export=download&id=1Fg3GR5xSoodixC9lk_s4vFjUTCYi3xmE" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                    <div class="cta-buttons mt-2">
-                        <a href="https://drive.google.com/uc?export=download&id=1Fg3GR5xSoodixC9lk_s4vFjUTCYi3xmE" class="download-link" download>Download Video</a>
+            <div class="section" id="authenticate">
+                <h1 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] text-center">Check Content Authenticity</h1>
+                <div class="flex justify-center py-4">
+                    <div class="flex flex-col items-center gap-3 max-w-[480px] w-full px-4 py-3">
+                        <p class="text-center">For testing, please download the test video provided at the bottom of this page.</p>
+                        <div id="thumbnail" class="w-1/2 h-20 border border-gray-200 flex items-center justify-center mb-4">
+                            <p class="text-gray-400">No file uploaded</p>
+                        </div>
+                        <form id="uploadForm" enctype="multipart/form-data" class="w-full flex flex-col items-center">
+                            <input type="file" id="fileInput" name="file" accept="video/mp4,video/quicktime,image/png,image/jpeg" class="hidden" onchange="showThumbnail(this)">
+                            <label for="fileInput" class="flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-[#F0F2F5] text-[#141414] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
+                                <span class="truncate">Choose File</span>
+                            </label>
+                            <div class="w-full mt-4">
+                                <label for="walletInput" class="block text-sm font-bold mb-2">Wallet Address:</label>
+                                <input type="text" id="walletInput" name="wallet" placeholder="Enter wallet address" class="w-full p-2 border border-gray-200 rounded">
+                            </div>
+                            <div id="currentWallet" class="w-full mt-4">
+                                <p class="font-bold">Current Wallet: <span id="currentWalletAddress"></span></p>
+                            </div>
+                            <button type="button" onclick="uploadFile()" class="mt-4 flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 flex-1 bg-[#359EFF] text-[#FFFFFF] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
+                                <span class="truncate">Upload</span>
+                            </button>
+                        </form>
+                        <div id="progressBar" class="w-full h-5 bg-[#F3F4F6] mt-4 rounded-full overflow-hidden hidden">
+                            <div id="progress" class="h-full bg-[#359EFF] w-0"></div>
+                        </div>
+                        <div id="infoBox" class="w-full mt-4 p-4 border border-gray-200 rounded">
+                            <p class="font-bold">Wallet: <span id="wallet"></span></p>
+                            <p class="font-bold">Hash: <span id="hash"></span></p>
+                            <p id="endMessage" class="mt-2"></p>
+                        </div>
+                        <div id="newWalletSection" class="w-full mt-4 hidden">
+                            <input type="text" id="newWalletInput" placeholder="Enter new wallet address" class="w-full p-2 border border-gray-200 rounded mb-2">
+                            <button type="button" onclick="reRunWithNewWallet()" class="flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 flex-1 bg-[#359EFF] text-[#FFFFFF] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
+                                <span class="truncate">Run this video with other wallet</span>
+                            </button>
+                        </div>
+                        <div class="w-full mt-4 flex justify-center">
+                            <div class="test-video">
+                                <h2 class="text-center">Test Video</h2>
+                                <video width="200" controls>
+                                    <source src="https://drive.google.com/uc?export=download&id=1Fg3GR5xSoodixC9lk_s4vFjUTCYi3xmE" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                                <div class="cta-buttons mt-2">
+                                    <a href="https://drive.google.com/uc?export=download&id=1Fg3GR5xSoodixC9lk_s4vFjUTCYi3xmE" class="download-link" download>Download Video</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-
 
             <!-- Search Section -->
             <div class="section" id="search">
@@ -398,7 +405,7 @@
 
                 const walletInput = document.getElementById('walletInput');
                 const currentWalletAddress = document.getElementById('currentWalletAddress');
-                currentWalletAddress.textContent = walletInput.value || 'DocuLink Test Walletç';
+                currentWalletAddress.textContent = walletInput.value || 'Not provided';
 
                 progressBar.classList.remove('hidden');
                 progress.style.width = '0';
@@ -653,4 +660,5 @@
     </div>
 </body>
 </html>
+
 
