@@ -311,7 +311,7 @@ def compare_videos_route():
 
             diff_img = cv2.absdiff(frame1, frame2)
             gray_diff = cv2.cvtColor(diff_img, cv2.COLOR_BGR2GRAY)
-            _, threshold_diff = cv2.threshold(gray_diff, 30, 255, cv2.THRESH_BINARY)
+            _, threshold_diff = cv2.threshold(gray_diff, 15, 255, cv2.THRESH_BINARY)
             contours, _ = cv2.findContours(threshold_diff, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
             total_diff = np.sum(threshold_diff) / 255
