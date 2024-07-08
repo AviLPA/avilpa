@@ -105,6 +105,12 @@
             text-decoration: underline;
             margin-top: 10px;
         }
+        .download-link {
+            color: #359EFF;
+            text-decoration: underline;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
     </style>
 </head>
 <body>
@@ -121,7 +127,7 @@
             </div>
             <div class="pt-16 pb-3">
                 <div class="flex border-b border-[#DBE1E6] px-4 justify-between">
-                    <a id="homeLink" class="inactive-link flex flex-col items-center justify-center pb-[13px] pt-4 flex-1 cursor-pointer" href="https://www.docuauth.info/">
+                    <a id="homeLink" class="inactive-link flex flex-col items-center justify-center pb-[13px] pt-4 flex-1 cursor-pointer" onclick="showSection('home')">
                         <p class="text-sm font-bold leading-normal tracking-[0.015em]">Home</p>
                     </a>
                     <a id="authenticateLink" class="inactive-link flex flex-col items-center justify-center pb-[13px] pt-4 flex-1 cursor-pointer" onclick="showSection('authenticate')">
@@ -139,11 +145,22 @@
                 </div>
             </div>
 
+            <!-- Home Section -->
+            <div class="section active" id="home">
+                <div class="container text-center">
+                    <div class="section-content">
+                        <h2>Welcome to DocuLink</h2>
+                        <p>We have moved our landing page and information to <a href="https://www.docuauth.info/" target="_blank" class="small-link">https://www.docuauth.info/</a></p>
+                    </div>
+                </div>
+            </div>
+
             <!-- Authenticate Section -->
-            <div class="section active" id="authenticate">
+            <div class="section" id="authenticate">
                 <h1 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] text-center">Check Content Authenticity</h1>
                 <div class="flex justify-center py-4">
                     <div class="flex flex-col items-center gap-3 max-w-[480px] w-full px-4 py-3">
+                        <p class="text-center">For testing, please download the test video provided at the bottom of this page.</p>
                         <div id="thumbnail" class="w-full h-40 border border-gray-200 flex items-center justify-center mb-4">
                             <p class="text-gray-400">No file uploaded</p>
                         </div>
@@ -185,7 +202,7 @@
                                     Your browser does not support the video tag.
                                 </video>
                                 <div class="cta-buttons mt-2">
-                                    <a href="https://drive.google.com/uc?export=download&id=1Fg3GR5xSoodixC9lk_s4vFjUTCYi3xmE" class="cta text-center block" download>Download Video</a>
+                                    <a href="https://drive.google.com/uc?export=download&id=1Fg3GR5xSoodixC9lk_s4vFjUTCYi3xmE" class="download-link" download>Download Video</a>
                                 </div>
                             </div>
                         </div>
@@ -228,7 +245,7 @@
                     <div class="flex flex-col items-center gap-3 max-w-[480px] w-full px-4 py-3">
                         <div class="flex flex-col items-center">
                             <a href="https://drive.google.com/uc?export=download&id=1QRyeaKdTJZkM5iMxoPKPvZyvpshUrwyk" class="small-link" download>Download Test 1 Image</a>
-                            <a href="https://drive.google.com/uc?export=download&id=1QAnQSSAbZtuFVybe5_J-u2_uj7gVpCCW" class="small-link" download>Download Test 2 Image</a>
+                            <a href="https://drive.google.com/uc?export=download&id=1dNbbr-iERQNWwsO3R-L8O8xu6ibdavQl" class="small-link" download>Download Test 2 Image</a>
                         </div>
                         <form id="compareForm" enctype="multipart/form-data" class="w-full flex flex-col items-center">
                             <div class="flex justify-between w-full mb-4">
@@ -621,7 +638,7 @@
             }
 
             document.addEventListener('DOMContentLoaded', () => {
-                showSection('authenticate');
+                showSection('home');
             });
 
             function copyToClipboard(text) {
@@ -635,6 +652,5 @@
     </div>
 </body>
 </html>
-
 
 
