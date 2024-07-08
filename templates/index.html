@@ -99,85 +99,11 @@
             font-size: 18px;
             font-weight: 700;
         }
-        .about-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            text-align: center;
-        }
-        .about-section {
-            margin-bottom: 20px;
-        }
-        .about-section h2 {
-            color: #0056b3;
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-        .about-section p {
-            color: #333;
-            font-size: 16px;
-            line-height: 1.6;
-            margin-bottom: 10px;
-        }
-
-        body {
-            font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;
-            background-color: #f4f4f9;
-        }
-        .flowchart-container {
-            width: 80%;
-            max-width: 1000px;
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            margin: 20px auto;
-        }
-        .flowchart {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 20px;
-            align-items: center;
-            position: relative;
-            text-align: center;
-        }
-        .flowchart-step {
-            background: linear-gradient(to bottom right, #007bff, #00c6ff);
-            color: white;
-            padding: 10px;
-            border-radius: 50%;
-            text-align: center;
-            width: 100px;
-            height: 100px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            font-size: 12px;
-        }
-        .arrow {
-            width: 0;
-            height: 0;
-            border-style: solid;
-            position: absolute;
-        }
-        .arrow.right {
-            border-width: 10px 0 10px 10px;
-            border-color: transparent transparent transparent #007bff;
-            top: 50%;
-            right: -20px;
-            transform: translateY(-50%);
-        }
-        .section-title {
-            grid-column: span 5;
-            font-size: 16px;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 20px;
+        .small-link {
+            font-size: 0.8em;
+            color: #359EFF;
+            text-decoration: underline;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -195,14 +121,11 @@
             </div>
             <div class="pt-16 pb-3">
                 <div class="flex border-b border-[#DBE1E6] px-4 justify-between">
-                    <a id="homeLink" class="inactive-link flex flex-col items-center justify-center pb-[13px] pt-4 flex-1 cursor-pointer" onclick="showSection('home')">
+                    <a id="homeLink" class="inactive-link flex flex-col items-center justify-center pb-[13px] pt-4 flex-1 cursor-pointer" href="https://www.docuauth.info/">
                         <p class="text-sm font-bold leading-normal tracking-[0.015em]">Home</p>
                     </a>
                     <a id="authenticateLink" class="inactive-link flex flex-col items-center justify-center pb-[13px] pt-4 flex-1 cursor-pointer" onclick="showSection('authenticate')">
                         <p class="text-sm font-bold leading-normal tracking-[0.015em]">Authenticate</p>
-                    </a>
-                    <a id="aboutLink" class="inactive-link flex flex-col items-center justify-center pb-[13px] pt-4 flex-1 cursor-pointer" onclick="showSection('about')">
-                        <p class="text-sm font-bold leading-normal tracking-[0.015em]">About</p>
                     </a>
                     <a id="searchLink" class="inactive-link flex flex-col items-center justify-center pb-[13px] pt-4 flex-1 cursor-pointer" onclick="showSection('search')">
                         <p class="text-sm font-bold leading-normal tracking-[0.015em]">Search</p>
@@ -216,74 +139,8 @@
                 </div>
             </div>
 
-            <!-- Landing Page Section -->
-            <div class="section active" id="home">
-                <div class="container text-center">
-                    <div class="section-content">
-                        <h2>Welcome to Trust</h2>
-                        <p>DocuLink aims to provide a robust and user-friendly platform for verifying the authenticity of digital content using blockchain technology. By leveraging cryptographic hashing and decentralized blockchain records, DocuLink ensures that digital materials such as videos, images, and documents are traceable back to their original source, offering unparalleled security and trust in the digital age.</p>
-                    </div>
-                    <div class="section-content">
-                        <h2>Our Solution</h2>
-                        <div class="features">
-                            <div class="feature-box">
-                                <h3>Cryptographic Hashing</h3>
-                                <p>Generate unique hashes for digital content to create a digital fingerprint.</p>
-                            </div>
-                            <div class="feature-box">
-                                <h3>Blockchain Recording</h3>
-                                <p>Store these hashes on the blockchain for immutable and transparent records.</p>
-                            </div>
-                            <div class="feature-box">
-                                <h3>User-Friendly Verification</h3>
-                                <p>A simple UI for verifying content authenticity with a single click.</p>
-                            </div>
-                            <div class="feature-box">
-                                <h3>Re-Authentication</h3>
-                                <p>Re-upload content to check the metadata, hash, and wallet address for a match.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="section-content">
-                        <h2>Flowchart for Document Verification</h2>
-                        <div class="flowchart-container">
-                            <div class="flowchart">
-                                <div class="section-title">User Process</div>
-                                <div class="flowchart-step">User Creates Document</div>
-                                <div class="arrow right"></div>
-                                <div class="flowchart-step">Upload Document to DocuLink</div>
-                                <div class="arrow right"></div>
-                                <div class="flowchart-step">Generate Hash via DocuLink</div>
-                                <div class="arrow right"></div>
-                                <div class="flowchart-step">Upload Hash to Blockchain via DocuLink</div>
-                                <div class="arrow right"></div>
-                                <div class="flowchart-step">Document Distribution</div>
-                                
-                                <div class="section-title">Recipient Process</div>
-                                <div class="flowchart-step">Recipient Downloads Document</div>
-                                <div class="arrow right"></div>
-                                <div class="flowchart-step">Upload Document to DocuLink for Verification</div>
-                                <div class="arrow right"></div>
-                                <div class="flowchart-step">Recalculate Hash via DocuLink</div>
-                                <div class="arrow right"></div>
-                                <div class="flowchart-step">Compare Hashes via DocuLink</div>
-                                <div class="arrow right"></div>
-                                <div class="flowchart-step">Verification Result</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="cta-section">
-                        <h2>Join Us</h2>
-                        <p>Join us on our journey to create a more secure and transparent digital world. At DocuLink, we are committed to providing the highest level of security and trust for your digital content.</p>
-                        <a href="#" class="cta-button" onclick="showSection('authenticate')">Get Started</a>
-                    </div>
-                </div>
-            </div>
-
             <!-- Authenticate Section -->
-            <div class="section" id="authenticate">
+            <div class="section active" id="authenticate">
                 <h1 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] text-center">Check Content Authenticity</h1>
                 <div class="flex justify-center py-4">
                     <div class="flex flex-col items-center gap-3 max-w-[480px] w-full px-4 py-3">
@@ -336,93 +193,10 @@
                 </div>
             </div>
 
-            <!-- About Section -->
-            <div class="section" id="about">
-                <div class="about-container">
-                    <div class="about-section">
-                        <h2>About DocuLink</h2>
-                        <p>At DocuLink, we are dedicated to revolutionizing digital content verification through innovative blockchain technology. Our mission is to provide businesses, content creators, and organizations with the tools they need to ensure the authenticity and integrity of their digital documents and media. By integrating state-of-the-art cryptographic hashing and blockchain technology, we offer unparalleled security and trust in the digital world.</p>
-                    </div>
-                    <div class="about-section">
-                        <h2>Our Vision</h2>
-                        <p>We envision a world where digital content is inherently trustworthy and verifiable, effectively safeguarding against fraud and misinformation. In an era where digital manipulation and deepfakes are increasingly sophisticated, our goal is to establish a universal standard of trust and reliability for digital content across various sectors including media, legal, and business industries. We believe that every digital interaction should be transparent, secure, and free from doubt.</p>
-                    </div>
-                    <div class="about-section">
-                        <h2>Our Solution</h2>
-                        <p>DocuLink leverages advanced cryptographic techniques to create secure digital fingerprints for your content, recorded on an immutable blockchain. Here’s how we do it:</p>
-                        <ul>
-                            <li><strong>Cryptographic Hashing:</strong> Each document or media file is processed through a cryptographic hash function, generating a unique digital fingerprint (hash) that represents the content's integrity. This process ensures that even the smallest alteration to the content will result in a different hash, making any tampering instantly detectable.</li>
-                            <li><strong>Blockchain Recording:</strong> The generated hash is recorded on a decentralized blockchain, ensuring an immutable and tamper-proof record of the content's authenticity. Blockchain technology provides a transparent and secure method for recording and verifying digital content, eliminating the risk of unauthorized alterations.</li>
-                            <li><strong>Verification Tools:</strong> We provide user-friendly tools that allow anyone to verify the authenticity of a document by recalculating its hash and comparing it to the blockchain record. Our verification process is straightforward and efficient, enabling real-time verification with just a few clicks. These tools are designed to integrate seamlessly into your existing workflows, offering a hassle-free experience.</li>
-                        </ul>
-                    </div>
-                    <div class="about-section">
-                        <h2>Why Choose Us</h2>
-                        <p><strong>Innovation:</strong> Our platform employs cutting-edge technology to provide the most secure and efficient content verification solutions available. Our commitment to continuous improvement ensures that we stay ahead of emerging threats and advancements in digital content manipulation.</p>
-                        <p><strong>Trust:</strong> DocuLink is dedicated to building a trusted ecosystem for digital content. By using our platform, you can be confident that your digital assets are protected against fraud and misinformation. We help you maintain the integrity of your content, which is crucial for establishing and preserving trust with your audience.</p>
-                        <p><strong>Security:</strong> We offer robust solutions to protect your intellectual property from unauthorized alterations. Our platform uses end-to-end encryption, multi-signature wallets, and compliance with relevant data protection regulations to ensure your data is handled securely and legally.</p>
-                    </div>
-                    <div class="about-section">
-                        <h2>Join Us</h2>
-                        <p>Join us on our journey to create a more secure and transparent digital world. At DocuLink, we are committed to providing the highest level of security and trust for your digital content. Whether you are a content creator, a business, or a legal firm, our platform offers the tools you need to ensure the integrity and authenticity of your digital assets. Let's work together to safeguard the future of digital content.</p>
-                        <h2 class="use-case-toggle text-[#007bff] cursor-pointer underline font-bold px-4 pb-2 pt-4 text-center" onclick="toggleUseCase()">Use Case &#9660;</h2>
-                        <div class="use-case-content bg-[#f9f9f9] rounded-lg p-4 text-[#333] hidden" id="useCaseContent">
-                            <h3 class="text-[#0056b3] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Scenario: Protecting a White Paper for SecureContent Project</h3>
-                            <h4 class="text-[#007bff] text-base font-bold leading-normal tracking-[0.015em] px-4 pb-2 pt-4">Challenge:</h4>
-                            <p class="text-[#333] text-base font-normal leading-normal pb-3 pt-1 px-4">You have created a detailed white paper for your DocuLink project, which outlines the innovative use of blockchain for digital content verification. You need to ensure that the white paper remains secure and can be proven authentic if someone attempts to steal or alter it.</p>
-                            <h4 class="text-[#007bff] text-base font-bold leading-normal tracking-[0.015em] px-4 pb-2 pt-4">Solution Implementation:</h4>
-                            <p class="text-[#333] text-base font-normal leading-normal pb-3 pt-1 px-4"><strong>Document Creation and Hash Generation:</strong></p>
-                            <ul class="text-[#333] text-base font-normal leading-normal pb-3 pt-1 px-4 list-disc list-inside">
-                                <li><strong>White Paper Creation:</strong> You finalize the white paper detailing the DocuLink project, including all technical specifications and business strategies.</li>
-                                <li><strong>Hash Generation:</strong> You use a cryptographic hash function (SHA-256) to generate a hash of the white paper document. This hash serves as a digital fingerprint of your document.</li>
-                            </ul>
-                            <p class="text-[#333] text-base font-normal leading-normal pb-3 pt-1 px-4"><strong>Hash Publication and Distribution:</strong></p>
-                            <ul class="text-[#333] text-base font-normal leading-normal pb-3 pt-1 px-4 list-disc list-inside">
-                                <li><strong>Hash Publication:</strong> You publish the hash value of the white paper on your official website and other verified channels. This establishes a public record of the document’s authenticity.</li>
-                                <li><strong>Document Distribution:</strong> You distribute the white paper to stakeholders, investors, and potential partners. The document includes instructions on how to verify its authenticity using the published hash.</li>
-                            </ul>
-                            <p class="text-[#333] text-base font-normal leading-normal pb-3 pt-1 px-4"><strong>Verification Process:</strong></p>
-                            <ul class="text-[#333] text-base font-normal leading-normal pb-3 pt-1 px-4 list-disc list-inside">
-                                <li><strong>Hash Verification:</strong> Recipients can download the white paper and recalculate the hash of the document. They compare this recalculated hash with the published hash value.</li>
-                                <li><strong>Results:</strong> If the hashes match, recipients are assured that the white paper is authentic and unaltered. If there’s a mismatch, it indicates potential tampering.</li>
-                            </ul>
-                            <h4 class="text-[#007bff] text-base font-bold leading-normal tracking-[0.015em] px-4 pb-2 pt-4">Example Scenario:</h4>
-                            <p class="text-[#333] text-base font-normal leading-normal pb-3 pt-1 px-4"><strong>Document Protection:</strong></p>
-                            <ul class="text-[#333] text-base font-normal leading-normal pb-3 pt-1 px-4 list-disc list-inside">
-                                <li><strong>You:</strong> Finalize the white paper for the SecureContent project.</li>
-                                <li><strong>Hash Generation:</strong> Generate a SHA-256 hash of the white paper:
-                                    <br>Hash: abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234
-                                </li>
-                                <li><strong>Hash Publication:</strong> Publish the hash value on your official website and share it through your verified communication channels.</li>
-                            </ul>
-                            <p class="text-[#333] text-base font-normal leading-normal pb-3 pt-1 px-4"><strong>Attempted Theft and Verification:</strong></p>
-                            <ul class="text-[#333] text-base font-normal leading-normal pb-3 pt-1 px-4 list-disc list-inside">
-                                <li><strong>Thief:</strong> An individual attempts to steal and alter your white paper, making unauthorized changes to the document.</li>
-                                <li><strong>Altered Document:</strong> The altered document has a different hash value when recalculated:
-                                    <br>Altered Hash: 1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234
-                                </li>
-                                <li><strong>Stakeholder:</strong> A recipient of the white paper verifies the document by recalculating the hash:
-                                    <br>Recalculated Hash: abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234
-                                </li>
-                                <li><strong>Verification Result:</strong> The recalculated hash matches the original published hash:
-                                    <br>Original Hash: abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234
-                                </li>
-                            </ul>
-                            <h4 class="text-[#007bff] text-base font-bold leading-normal tracking-[0.015em] px-4 pb-2 pt-4">Outcome:</h4>
-                            <ul class="text-[#333] text-base font-normal leading-normal pb-3 pt-1 px-4 list-disc list-inside">
-                                <li><strong>Security:</strong> The white paper remains secure, and any alterations can be easily detected.</li>
-                                <li><strong>Trust:</strong> Stakeholders have confidence in the authenticity of your document.</li>
-                                <li><strong>Integrity:</strong> You protect your intellectual property from theft and unauthorized changes.</li>
-                            </ul>
-                            <p class="text-[#333] text-base font-normal leading-normal pb-3 pt-1 px-4">This process ensures that your white paper for the SecureContent project is securely protected and its authenticity can be verified, deterring potential theft or alteration.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- Search Section -->
             <div class="section" id="search">
                 <h1 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] text-center">Search VIA Content Metadata</h1>
+                <p class="text-center">This feature will search the entire blockchain for a unique hash, but due to API restrictions this is currently not accessible.</p>
                 <div class="flex justify-center py-4">
                     <div class="flex flex-col items-center gap-3 max-w-[480px] w-full px-4 py-3">
                         <form id="searchForm" enctype="multipart/form-data" class="w-full flex flex-col items-center">
@@ -449,12 +223,17 @@
             <!-- Video Comparison Section -->
             <div class="section" id="compare">
                 <h1 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] text-center">Comparison</h1>
+                <p class="text-center">For the proof of concept, please download and use Test 1 and Test 2 images for comparison.</p>
                 <div class="flex justify-center py-4">
                     <div class="flex flex-col items-center gap-3 max-w-[480px] w-full px-4 py-3">
+                        <div class="flex flex-col items-center">
+                            <a href="https://drive.google.com/uc?export=download&id=1QRyeaKdTJZkM5iMxoPKPvZyvpshUrwyk" class="small-link" download>Download Test 1 Image</a>
+                            <a href="https://drive.google.com/uc?export=download&id=1QAnQSSAbZtuFVybe5_J-u2_uj7gVpCCW" class="small-link" download>Download Test 2 Image</a>
+                        </div>
                         <form id="compareForm" enctype="multipart/form-data" class="w-full flex flex-col items-center">
                             <div class="flex justify-between w-full mb-4">
                                 <div class="flex flex-col items-center w-1/2 pr-2">
-                                    <input type="file" id="video1Input" name="video1" accept="video/mp4,video/quicktime,image/png,image/jpeg" class="hidden" onchange="showVideoFileName(this, 'thumbnail1')" required>
+                                    <input type="file" id="video1Input" name="video1" accept="image/png,image/jpeg" class="hidden" onchange="showVideoFileName(this, 'thumbnail1')" required>
                                     <label for="video1Input" class="flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-[#F0F2F5] text-[#141414] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
                                         <span class="truncate">Upload File</span>
                                     </label>
@@ -463,7 +242,7 @@
                                     </div>
                                 </div>
                                 <div class="flex flex-col items-center w-1/2 pl-2">
-                                    <input type="file" id="video2Input" name="video2" accept="video/mp4,video/quicktime,image/png,image/jpeg" class="hidden" onchange="showVideoFileName(this, 'thumbnail2')" required>
+                                    <input type="file" id="video2Input" name="video2" accept="image/png,image/jpeg" class="hidden" onchange="showVideoFileName(this, 'thumbnail2')" required>
                                     <label for="video2Input" class="flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-[#F0F2F5] text-[#141414] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
                                         <span class="truncate">Upload File</span>
                                     </label>
@@ -842,20 +621,8 @@
             }
 
             document.addEventListener('DOMContentLoaded', () => {
-                showSection('home');
+                showSection('authenticate');
             });
-
-            function toggleUseCase() {
-                const useCaseContent = document.getElementById('useCaseContent');
-                const useCaseToggle = document.querySelector('.use-case-toggle');
-                if (useCaseContent.style.display === 'none' || useCaseContent.style.display === '') {
-                    useCaseContent.style.display = 'block';
-                    useCaseToggle.innerHTML = 'Use Case &#9650;';
-                } else {
-                    useCaseContent.style.display = 'none';
-                    useCaseToggle.innerHTML = 'Use Case &#9660;';
-                }
-            }
 
             function copyToClipboard(text) {
                 navigator.clipboard.writeText(text).then(function() {
