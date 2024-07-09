@@ -165,52 +165,74 @@
 
             <!-- Authenticate Section -->
             <div class="section" id="authenticate">
-                <h1 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] text-center">Check Content Authenticity</h1>
-                <div class="flex justify-center py-4">
-                    <div class="flex flex-col items-center gap-3 max-w-[480px] w-full px-4 py-3">
-                        <p class="text-center">For testing, please download the test video provided at the bottom of this page.</p>
-                        <div id="thumbnail" class="w-1/2 h-20 border border-gray-200 flex items-center justify-center mb-4">
-                            <p class="text-gray-400">No file uploaded</p>
-                        </div>
-                        <form id="uploadForm" enctype="multipart/form-data" class="w-full flex flex-col items-center">
-                            <input type="file" id="fileInput" name="file" accept="video/mp4,video/quicktime,image/png,image/jpeg" class="hidden" onchange="showThumbnail(this)">
-                            <label for="fileInput" class="flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-[#F0F2F5] text-[#141414] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
-                                <span class="truncate">Choose File</span>
-                            </label>
-                            <div class="w-full mt-4">
-                                <label for="walletInput" class="block text-sm font-bold mb-2">Wallet Address:</label>
-                                <input type="text" id="walletInput" name="wallet" placeholder="Enter wallet address" class="w-full p-2 border border-gray-200 rounded">
-                            </div>
-                            <div id="currentWallet" class="w-full mt-4">
-                                <p class="font-bold">Current Wallet: <span id="currentWalletAddress"></span></p>
-                            </div>
-                            <button type="button" onclick="uploadFile()" class="mt-4 flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 flex-1 bg-[#359EFF] text-[#FFFFFF] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
-                                <span class="truncate">Upload</span>
-                            </button>
-                        </form>
-                        <div id="progressBar" class="w-full h-5 bg-[#F3F4F6] mt-4 rounded-full overflow-hidden hidden">
-                            <div id="progress" class="h-full bg-[#359EFF] w-0"></div>
-                        </div>
-                        <div id="infoBox" class="w-full mt-4 p-4 border border-gray-200 rounded">
-                            <p class="font-bold">Wallet: <span id="wallet"></span></p>
-                            <p class="font-bold">Hash: <span id="hash"></span></p>
-                            <p id="endMessage" class="mt-2"></p>
-                        </div>
-                        <div id="newWalletSection" class="w-full mt-4 hidden">
-                            <input type="text" id="newWalletInput" placeholder="Enter new wallet address" class="w-full p-2 border border-gray-200 rounded mb-2">
-                            <button type="button" onclick="reRunWithNewWallet()" class="flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 flex-1 bg-[#359EFF] text-[#FFFFFF] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
-                                <span class="truncate">Run this video with other wallet</span>
-                            </button>
-                        </div>
-                        <div class="w-full mt-4 flex justify-center">
-                            <div class="test-video">
-                                <h2 class="text-center">Test Video</h2>
-                                <video width="200" controls>
-                                    <source src="https://drive.google.com/uc?export=download&id=1Fg3GR5xSoodixC9lk_s4vFjUTCYi3xmE" type="video/mp4">
-                                    Your browser does not support the video tag.
-                                </video>
-                                <div class="cta-buttons mt-2">
-                                    <a href="https://drive.google.com/uc?export=download&id=1Fg3GR5xSoodixC9lk_s4vFjUTCYi3xmE" class="download-link" download>Download Video</a>
+                <div class="container flex justify-between items-start py-4">
+                    <!-- Left Side: Explanation Text -->
+                    <div class="w-1/3 pr-2">
+                        <h1 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em]">Check Content Authenticity</h1>
+                        <p class="text-[#333] text-base font-normal leading-normal mt-4">For testing, please download the test video provided at the bottom of this page.</p>
+
+                        <p class="text-[#333] text-base font-normal leading-normal mt-4">Proof of Concept:</p>
+                        <p class="text-[#333] text-base font-normal leading-normal mt-2">
+                            This test video serves as a proof of concept (POC) and a case study to demonstrate the authentication process. It simulates a video that a creator has uploaded, and you, as the consumer, are now trying to authenticate it. Here's how the process works:
+                        </p>
+                        <ul class="list-disc list-inside text-[#333] text-base font-normal leading-normal mt-2">
+                            <li><strong>Content Creation and Hashing:</strong> The video was first processed through our content creator's hub (currently in production), where it was hashed using our advanced <a href="javascript:void(0);" onclick="showSection('list')" class="text-blue-500 underline">Hash Feature</a>. This hash was then recorded on the blockchain via a transaction, ensuring an immutable record of the video's integrity.</li>
+                            <li><strong>Download the Test Video:</strong> The provided test video simulates a piece of digital content you want to verify.</li>
+                            <li><strong>Upload the Test Video:</strong> Upload the downloaded video to the authentication system.</li>
+                            <li><strong>Verification Process:</strong> The system will generate a hash of the uploaded video and check this hash against the records in our test wallet on the blockchain. It ensures the content matches the original stored hash.</li>
+                        </ul>
+                        <p class="text-[#333] text-base font-normal leading-normal mt-2">This POC demonstrates how a creator's video is hashed and recorded on the blockchain, and how the consumer can verify its authenticity using our system.</p>
+                    </div>
+                    
+                    <!-- Right Side: Upload Section -->
+                    <div class="w-2/3 pl-2">
+                        <h1 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] text-center">Check Content Authenticity</h1>
+                        <div class="flex justify-center py-4">
+                            <div class="flex flex-col items-center gap-3 max-w-[480px] w-full px-4 py-3">
+                                <div id="thumbnail" class="w-full h-20 border border-gray-200 flex items-center justify-center mb-4">
+                                    <p class="text-gray-400">No file uploaded</p>
+                                </div>
+                                <form id="uploadForm" enctype="multipart/form-data" class="w-full flex flex-col items-center">
+                                    <input type="file" id="fileInput" name="file" accept="video/mp4,video/quicktime,image/png,image/jpeg" class="hidden" onchange="showThumbnail(this)">
+                                    <label for="fileInput" class="flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-5 bg-[#F0F2F5] text-[#141414] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
+                                        <span class="truncate">Choose File</span>
+                                    </label>
+                                    <div class="w-full mt-4">
+                                        <label for="walletInput" class="block text-sm font-bold mb-2">Wallet Address:</label>
+                                        <input type="text" id="walletInput" name="wallet" placeholder="Enter wallet address" class="w-full p-2 border border-gray-200 rounded">
+                                    </div>
+                                    <div id="currentWallet" class="w-full mt-4">
+                                        <p class="font-bold">Current Wallet: <span id="currentWalletAddress"></span></p>
+                                    </div>
+                                    <button type="button" onclick="uploadFile()" class="mt-4 flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-5 flex-1 bg-[#359EFF] text-[#FFFFFF] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
+                                        <span class="truncate">Upload</span>
+                                    </button>
+                                </form>
+                                <div id="progressBar" class="w-full h-5 bg-[#F3F4F6] mt-4 rounded-full overflow-hidden hidden">
+                                    <div id="progress" class="h-full bg-[#359EFF] w-0"></div>
+                                </div>
+                                <div id="infoBox" class="w-full mt-4 p-4 border border-gray-200 rounded">
+                                    <p class="font-bold">Wallet: <span id="wallet"></span></p>
+                                    <p class="font-bold">Hash: <span id="hash"></span></p>
+                                    <p id="endMessage" class="mt-2"></p>
+                                </div>
+                                <div id="newWalletSection" class="w-full mt-4 hidden">
+                                    <input type="text" id="newWalletInput" placeholder="Enter new wallet address" class="w-full p-2 border border-gray-200 rounded mb-2">
+                                    <button type="button" onclick="reRunWithNewWallet()" class="flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-5 flex-1 bg-[#359EFF] text-[#FFFFFF] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
+                                        <span class="truncate">Run this video with other wallet</span>
+                                    </button>
+                                </div>
+                                <div class="w-full mt-4 flex justify-center">
+                                    <div class="test-video">
+                                        <h2 class="text-center">Test Video</h2>
+                                        <video width="200" controls>
+                                            <source src="https://drive.google.com/uc?export=download&id=1Fg3GR5xSoodixC9lk_s4vFjUTCYi3xmE" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                        <div class="cta-buttons mt-2">
+                                            <a href="https://drive.google.com/uc?export=download&id=1Fg3GR5xSoodixC9lk_s4vFjUTCYi3xmE" class="download-link" download>Download Video</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -296,6 +318,7 @@
             <!-- Add to List Section -->
             <div class="section" id="list">
                 <h1 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] text-center">Add to List</h1>
+                <p class="text-center">Upload files to add their hash to the list for verification.</p>
                 <div class="flex justify-center py-4">
                     <div class="flex flex-col items-center gap-3 max-w-[480px] w-full px-4 py-3">
                         <form id="listForm" enctype="multipart/form-data" class="w-full flex flex-col items-center">
@@ -304,21 +327,21 @@
                                 <span class="truncate">Choose File</span>
                             </label>
                             <button type="button" onclick="addToList()" class="mt-4 flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 flex-1 bg-[#359EFF] text-[#FFFFFF] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
-                                <span class="truncate">Add</span>
+                                <span class="truncate">Add to List</span>
                             </button>
                         </form>
                         <div id="listProgressBar" class="w-full h-5 bg-[#F3F4F6] mt-4 rounded-full overflow-hidden hidden">
                             <div id="listProgress" class="h-full bg-[#359EFF] w-0"></div>
                         </div>
                         <div id="listMessage" class="info-box w-full mt-4 p-4 border border-gray-200 rounded hidden"></div>
-                        <div class="hash-list w-full mt-4 p-4 border border-gray-200 rounded">
-                            <h3 class="text-center">Running List of Hashes</h3>
-                            <ul id="hashListContent"></ul>
+                        <div class="w-full mt-4">
+                            <ul id="hashListContent" class="list-disc list-inside"></ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        
         <script>
             function showSection(sectionId) {
                 document.querySelectorAll('.section').forEach(section => {
@@ -356,7 +379,11 @@
 
                 reader.onload = function(e) {
                     const thumbnail = document.getElementById('thumbnail');
-                    thumbnail.innerHTML = `<img src="${e.target.result}" alt="Thumbnail" class="thumbnail">`;
+                    if (file.type.startsWith('image/')) {
+                        thumbnail.innerHTML = `<img src="${e.target.result}" alt="Thumbnail" class="thumbnail">`;
+                    } else {
+                        thumbnail.innerHTML = `<p>${file.name}</p>`;
+                    }
                 };
 
                 reader.readAsDataURL(file);
@@ -656,9 +683,31 @@
                     console.error('Could not copy text: ', err);
                 });
             }
+
+            // Drag and Drop functionality
+            const dropArea = document.getElementById('thumbnail');
+            const fileInput = document.getElementById('fileInput');
+
+            dropArea.addEventListener('dragover', (event) => {
+                event.preventDefault();
+                dropArea.classList.add('dragover');
+            });
+
+            dropArea.addEventListener('dragleave', () => {
+                dropArea.classList.remove('dragover');
+            });
+
+            dropArea.addEventListener('drop', (event) => {
+                event.preventDefault();
+                dropArea.classList.remove('dragover');
+
+                const files = event.dataTransfer.files;
+                if (files.length > 0) {
+                    fileInput.files = files;
+                    showThumbnail(fileInput);
+                }
+            });
         </script>
     </div>
 </body>
 </html>
-
-
