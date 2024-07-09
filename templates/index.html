@@ -169,19 +169,26 @@
                     <!-- Left Side: Explanation Text -->
                     <div class="w-1/3 pr-2">
                         <h1 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em]">Check Content Authenticity</h1>
-                        <p class="text-[#333] text-base font-normal leading-normal mt-4">For testing, please download the test video provided at the bottom of this page.</p>
-
+                        <div class="w-full mt-4 flex justify-center">
+                            <div class="test-image">
+                                <h2 class="text-center">Test Image</h2>
+                                <div class="cta-buttons mt-2">
+                                    <a href="https://drive.google.com/uc?export=download&id=1dNbbr-iERQNWwsO3R-L8O8xu6ibdavQl" class="download-link" download>Download Image</a>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-[#333] text-base font-normal leading-normal mt-4">For testing, please download the test image provided above.</p>
                         <p class="text-[#333] text-base font-normal leading-normal mt-4">Proof of Concept:</p>
                         <p class="text-[#333] text-base font-normal leading-normal mt-2">
-                            This test video serves as a proof of concept (POC) and a case study to demonstrate the authentication process. It simulates a video that a creator has uploaded, and you, as the consumer, are now trying to authenticate it. Here's how the process works:
+                            This test image serves as a proof of concept (POC) and a case study to demonstrate the authentication process. It simulates an image that a creator has uploaded, and you, as the consumer, are now trying to authenticate it. Here's how the process works:
                         </p>
                         <ul class="list-disc list-inside text-[#333] text-base font-normal leading-normal mt-2">
-                            <li><strong>Content Creation and Hashing:</strong> The video was first processed through our content creator's hub (currently in production), where it was hashed using our advanced <a href="javascript:void(0);" onclick="showSection('list')" class="text-blue-500 underline">Hash Feature</a>. This hash was then recorded on the blockchain via a transaction, ensuring an immutable record of the video's integrity.</li>
-                            <li><strong>Download the Test Video:</strong> The provided test video simulates a piece of digital content you want to verify.</li>
-                            <li><strong>Upload the Test Video:</strong> Upload the downloaded video to the authentication system.</li>
-                            <li><strong>Verification Process:</strong> The system will generate a hash of the uploaded video and check this hash against the records in our test wallet on the blockchain. It ensures the content matches the original stored hash.</li>
+                            <li><strong>Content Creation and Hashing:</strong> The image was first processed through our content creator's hub (currently in production), where it was hashed using our advanced <a href="javascript:void(0);" onclick="showSection('list')" class="text-blue-500 underline">Hash Feature</a>. This hash was then recorded on the blockchain via a transaction, ensuring an immutable record of the image's integrity.</li>
+                            <li><strong>Download the Test Image:</strong> The provided test image simulates a piece of digital content you want to verify.</li>
+                            <li><strong>Upload the Test Image:</strong> Upload the downloaded image to the authentication system.</li>
+                            <li><strong>Verification Process:</strong> The system will generate a hash of the uploaded image and check this hash against the records in our test wallet on the blockchain. It ensures the content matches the original stored hash.</li>
                         </ul>
-                        <p class="text-[#333] text-base font-normal leading-normal mt-2">This POC demonstrates how a creator's video is hashed and recorded on the blockchain, and how the consumer can verify its authenticity using our system.</p>
+                        <p class="text-[#333] text-base font-normal leading-normal mt-2">This POC demonstrates how a creator's image is hashed and recorded on the blockchain, and how the consumer can verify its authenticity using our system.</p>
                     </div>
                     
                     <!-- Right Side: Upload Section -->
@@ -189,22 +196,22 @@
                         <h1 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] text-center">Check Content Authenticity</h1>
                         <div class="flex justify-center py-4">
                             <div class="flex flex-col items-center gap-3 max-w-[480px] w-full px-4 py-3">
-                                <div id="thumbnail" class="w-full h-20 border border-gray-200 flex items-center justify-center mb-4">
-                                    <p class="text-gray-400">No file uploaded</p>
+                                <div id="dropArea" class="w-full h-20 border border-gray-200 flex items-center justify-center mb-4" ondrop="handleDrop(event)" ondragover="handleDragOver(event)">
+                                    <p id="thumbnailText" class="text-gray-400">Drag and Drop Test Image or Choose From Downloads</p>
                                 </div>
                                 <form id="uploadForm" enctype="multipart/form-data" class="w-full flex flex-col items-center">
-                                    <input type="file" id="fileInput" name="file" accept="video/mp4,video/quicktime,image/png,image/jpeg" class="hidden" onchange="showThumbnail(this)">
-                                    <label for="fileInput" class="flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-5 bg-[#F0F2F5] text-[#141414] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
+                                    <input type="file" id="fileInput" name="file" accept="image/png,image/jpeg" class="hidden" onchange="showThumbnail(this)">
+                                    <label for="fileInput" class="flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#F0F2F5] text-[#141414] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
                                         <span class="truncate">Choose File</span>
                                     </label>
                                     <div class="w-full mt-4">
                                         <label for="walletInput" class="block text-sm font-bold mb-2">Wallet Address:</label>
-                                        <input type="text" id="walletInput" name="wallet" placeholder="Enter wallet address" class="w-full p-2 border border-gray-200 rounded">
+                                        <input type="text" id="walletInput" name="wallet" placeholder="DocuLink Test Wallet" class="w-full p-2 border border-gray-200 rounded">
                                     </div>
                                     <div id="currentWallet" class="w-full mt-4">
-                                        <p class="font-bold">Current Wallet: <span id="currentWalletAddress"></span></p>
+                                        <p class="font-bold">Current Wallet: DocuLink Test <span id="currentWalletAddress"></span></p>
                                     </div>
-                                    <button type="button" onclick="uploadFile()" class="mt-4 flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-5 flex-1 bg-[#359EFF] text-[#FFFFFF] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
+                                    <button type="button" onclick="uploadFile()" class="mt-4 flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 flex-1 bg-[#359EFF] text-[#FFFFFF] text-base font-bold leading-normal tracking-[0.015em] w-full text-center" id="uploadButton">
                                         <span class="truncate">Upload</span>
                                     </button>
                                 </form>
@@ -218,21 +225,9 @@
                                 </div>
                                 <div id="newWalletSection" class="w-full mt-4 hidden">
                                     <input type="text" id="newWalletInput" placeholder="Enter new wallet address" class="w-full p-2 border border-gray-200 rounded mb-2">
-                                    <button type="button" onclick="reRunWithNewWallet()" class="flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-5 flex-1 bg-[#359EFF] text-[#FFFFFF] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
-                                        <span class="truncate">Run this video with other wallet</span>
+                                    <button type="button" onclick="reRunWithNewWallet()" class="flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 flex-1 bg-[#359EFF] text-[#FFFFFF] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
+                                        <span class="truncate">Run this image with other wallet</span>
                                     </button>
-                                </div>
-                                <div class="w-full mt-4 flex justify-center">
-                                    <div class="test-video">
-                                        <h2 class="text-center">Test Video</h2>
-                                        <video width="200" controls>
-                                            <source src="https://drive.google.com/uc?export=download&id=1Fg3GR5xSoodixC9lk_s4vFjUTCYi3xmE" type="video/mp4">
-                                            Your browser does not support the video tag.
-                                        </video>
-                                        <div class="cta-buttons mt-2">
-                                            <a href="https://drive.google.com/uc?export=download&id=1Fg3GR5xSoodixC9lk_s4vFjUTCYi3xmE" class="download-link" download>Download Video</a>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -277,7 +272,7 @@
                             <a href="https://drive.google.com/uc?export=download&id=1QRyeaKdTJZkM5iMxoPKPvZyvpshUrwyk" class="small-link" download>Download Test 1 Image</a>
                             <a href="https://drive.google.com/uc?export=download&id=1dNbbr-iERQNWwsO3R-L8O8xu6ibdavQl" class="small-link" download>Download Test 2 Image</a>
                         </div>
-                        <form id="compareForm" enctype="multipart/form-data" class="w-full flex flex-col items-center">
+                        <form id="compareForm" enctype="multipart/form-data" class="w-full flex flex-col items-center" ondrop="handleDrop(event)" ondragover="handleDragOver(event)">
                             <div class="flex justify-between w-full mb-4">
                                 <div class="flex flex-col items-center w-1/2 pr-2">
                                     <input type="file" id="video1Input" name="video1" accept="image/png,image/jpeg" class="hidden" onchange="showVideoFileName(this, 'thumbnail1')" required>
@@ -318,7 +313,7 @@
             <!-- Add to List Section -->
             <div class="section" id="list">
                 <h1 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] text-center">Add to List</h1>
-                <p class="text-center">Upload files to add their hash to the list for verification.</p>
+                <p class="text-center">This feature allows you to add video content to our authenticity list.</p>
                 <div class="flex justify-center py-4">
                     <div class="flex flex-col items-center gap-3 max-w-[480px] w-full px-4 py-3">
                         <form id="listForm" enctype="multipart/form-data" class="w-full flex flex-col items-center">
@@ -334,14 +329,15 @@
                             <div id="listProgress" class="h-full bg-[#359EFF] w-0"></div>
                         </div>
                         <div id="listMessage" class="info-box w-full mt-4 p-4 border border-gray-200 rounded hidden"></div>
-                        <div class="w-full mt-4">
-                            <ul id="hashListContent" class="list-disc list-inside"></ul>
+                        <div class="mt-4 w-full">
+                            <h3 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] text-center">Hash List:</h3>
+                            <ul id="hashListContent" class="list-disc list-inside text-[#333] text-base font-normal leading-normal"></ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <script>
             function showSection(sectionId) {
                 document.querySelectorAll('.section').forEach(section => {
@@ -373,12 +369,26 @@
                 };
             }
 
+            function handleDrop(event) {
+                event.preventDefault();
+                const file = event.dataTransfer.files[0];
+                if (file) {
+                    document.getElementById('fileInput').files = event.dataTransfer.files;
+                    showThumbnail(document.getElementById('fileInput'));
+                }
+            }
+
+            function handleDragOver(event) {
+                event.preventDefault();
+            }
+
             function showThumbnail(input) {
                 const file = input.files[0];
                 const reader = new FileReader();
 
                 reader.onload = function(e) {
-                    const thumbnail = document.getElementById('thumbnail');
+                    const thumbnail = document.getElementById('dropArea');
+                    const thumbnailText = document.getElementById('thumbnailText');
                     if (file.type.startsWith('image/')) {
                         thumbnail.innerHTML = `<img src="${e.target.result}" alt="Thumbnail" class="thumbnail">`;
                     } else {
@@ -429,10 +439,11 @@
                 const hashSpan = document.getElementById('hash');
                 const endMessage = document.getElementById('endMessage');
                 const newWalletSection = document.getElementById('newWalletSection');
+                const uploadButton = document.getElementById('uploadButton');
 
                 const walletInput = document.getElementById('walletInput');
                 const currentWalletAddress = document.getElementById('currentWalletAddress');
-                currentWalletAddress.textContent = walletInput.value || 'Not provided';
+                currentWalletAddress.textContent = walletInput.value || 'DocuLink Test Wallet';
 
                 progressBar.classList.remove('hidden');
                 progress.style.width = '0';
@@ -443,6 +454,7 @@
                 newWalletSection.classList.add('hidden');
 
                 try {
+                    uploadButton.disabled = true;
                     startProgress('progressBar', 'progress');
                     const response = await fetch('/upload_file', {
                         method: 'POST',
@@ -471,6 +483,8 @@
                     endMessage.classList.add('text-red-500');
                     endMessage.classList.remove('text-green-500');
                     infoBox.classList.remove('hidden');
+                } finally {
+                    uploadButton.disabled = false;
                 }
             }
 
@@ -683,31 +697,8 @@
                     console.error('Could not copy text: ', err);
                 });
             }
-
-            // Drag and Drop functionality
-            const dropArea = document.getElementById('thumbnail');
-            const fileInput = document.getElementById('fileInput');
-
-            dropArea.addEventListener('dragover', (event) => {
-                event.preventDefault();
-                dropArea.classList.add('dragover');
-            });
-
-            dropArea.addEventListener('dragleave', () => {
-                dropArea.classList.remove('dragover');
-            });
-
-            dropArea.addEventListener('drop', (event) => {
-                event.preventDefault();
-                dropArea.classList.remove('dragover');
-
-                const files = event.dataTransfer.files;
-                if (files.length > 0) {
-                    fileInput.files = files;
-                    showThumbnail(fileInput);
-                }
-            });
         </script>
     </div>
 </body>
 </html>
+
