@@ -151,17 +151,17 @@
             </div>
 
             <!-- Home Section -->
-            <div class="section active" id="home">
-                <div class="container text-center">
-                    <div class="section-content">
-                        <h2>Welcome to DocuLink</h2>
-                        <p>We have moved our landing page and information to <a href="https://www.docuauth.info/" target="_blank" class="small-link">https://www.docuauth.info/</a></p>
-                        <p class="text-[#333] text-base font-normal leading-normal mt-4">
-                            For our Demos <a href="#" onclick="showSection('authenticate')" class="demo-link">Click Here</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
+<div class="section active" id="home">
+    <div class="container text-center">
+        <div class="section-content">
+            <h2 class="text-4xl">Welcome to DocuLink</h2>
+            <p class="text-lg mt-2">Landing Page: <a href="https://www.docuauth.info/" target="_blank" class="small-link">https://www.docuauth.info/</a></p>
+            <p class="text-[#333] text-base font-normal leading-normal mt-4">
+                For our demos <a href="#" onclick="showSection('authenticate')" class="demo-link">Click Here</a>
+            </p>
+        </div>
+    </div>
+</div>
 
            <!-- Authenticate Section -->
 <div class="section" id="authenticate">
@@ -173,8 +173,10 @@
                 <div class="test-image">
                     <h2 class="text-center">Test Image</h2>
                     <div class="cta-buttons mt-2">
-                        <a href="https://drive.google.com/uc?export=download&id=1dNbbr-iERQNWwsO3R-L8O8xu6ibdavQl" class="download-link" download>Download Image</a>
-                    </div>
+                        <a href="https://drive.google.com/uc?export=download&id=1dNbbr-iERQNWwsO3R-L8O8xu6ibdavQl" class="download-link" download>
+                            <span class="text-black">1.</span> Download Image
+                        </a>
+                                            </div>
                 </div>
             </div>
             <p class="text-[#333] text-base font-normal leading-normal mt-4">For testing, please download the test image provided above.</p>
@@ -184,9 +186,9 @@
             </p>
             <ul class="list-none text-[#333] text-base font-normal leading-normal mt-2">
                 <li><strong>Content Creation and Hashing:</strong> The image was first processed through our content creator's hub (currently in production), where it was hashed using our advanced <a href="javascript:void(0);" onclick="showSection('list')" class="text-blue-500 underline">Hash Feature</a>. This hash was then recorded on the blockchain via a transaction, ensuring an immutable record of the image's integrity.</li>
-                <li><strong>1. Download the Test Image:</strong> The provided test image simulates a piece of digital content you want to verify.</li>
-                <li><strong>2. Upload the Test Image:</strong> Upload the downloaded image to the authentication system.</li>
-                <li><strong>3. Verification Process:</strong> The system will generate a hash of the uploaded image and check this hash against the records in our test wallet on the blockchain. It ensures the content matches the original stored hash.</li>
+                <li><strong>2. Download the Test Image:</strong> The provided test image simulates a piece of digital content you want to verify.</li>
+                <li><strong>3. Upload the Test Image:</strong> Upload the downloaded image to the authentication system.</li>
+                <li><strong>4. Verification Process:</strong> The system will generate a hash of the uploaded image and check this hash against the records in our test wallet on the blockchain. It ensures the content matches the original stored hash.</li>
             </ul>
             <p class="text-[#333] text-base font-normal leading-normal mt-2">This POC demonstrates how a creator's image is hashed and recorded on the blockchain, and how the consumer can verify its authenticity using our system.</p>
         </div>
@@ -322,7 +324,7 @@
 
             <!-- Add to List Section -->
             <div class="section" id="list">
-                <h1 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] text-center">Add to List</h1>
+                <h1 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] text-center">Hash Your Image!</h1>
                 <p class="text-center">This feature allows you to add video content to our authenticity list.</p>
                 <div class="flex justify-center py-4">
                     <div class="flex flex-col items-center gap-3 max-w-[480px] w-full px-4 py-3">
@@ -724,5 +726,3 @@
     </div>
 </body>
 </html>
-
-
