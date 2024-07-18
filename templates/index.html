@@ -239,34 +239,34 @@
 
 
             <!-- Search Section -->
-           # <div class="section" id="search">
-            #    <h1 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] text-center">Search VIA Content Metadata</h1>
-             #   <p class="text-center">This feature will search the entire blockchain for a unique hash, but due to API restrictions this is currently not accessible.</p>
-              #  <div class="flex justify-center py-4">
-               #     <div class="flex flex-col items-center gap-3 max-w-[480px] w-full px-4 py-3">
-                #        <form id="searchForm" enctype="multipart/form-data" class="w-full flex flex-col items-center">
-                 #           <div id="dropAreaSearch" class="w-full h-20 border border-gray-200 flex items-center justify-center mb-4" ondrop="handleDrop(event, 'searchFileInput')" ondragover="handleDragOver(event)">
-                  #              <p id="searchThumbnailText" class="text-gray-400">Drag and Drop Video or Choose From Downloads</p>
-                   #         </div>
-                    #        <input type="file" id="searchFileInput" name="file" accept="video/mp4,video/quicktime,image/png,image/jpeg" class="hidden" onchange="showSearchThumbnail(this)">
-                     #       <label for="searchFileInput" class="flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-[#F0F2F5] text-[#141414] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
-                      #          <span class="truncate">Choose Video</span>
-                       #     </label>
-                        #    <button type="button" onclick="searchFile()" class="mt-4 flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 flex-1 bg-[#359EFF] text-[#FFFFFF] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
-                         #       <span class="truncate">Run Search</span>
-                          #  </button>
-                       # </form>
-                       # <div id="searchProgressBar" class="w-full h-5 bg-[#F3F4F6] mt-4 rounded-full overflow-hidden hidden">
-                        #    <div id="searchProgress" class="h-full bg-[#359EFF] w-0"></div>
-                       # </div>
-                       # <div id="searchInfoBox" class="w-full mt-4 p-4 border border-gray-200 rounded">
-                        #    <p class="font-bold">Wallet: <span id="searchWallet"></span></p>
-                         #   <p class="font-bold">Hash: <span id="searchHash"></span></p>
-                          #  <p id="searchEndMessage" class="mt-2"></p>
-                       # </div>
-                   # </div>
-               # </div>
-           # </div>
+           <div class="section" id="search">
+                <h1 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] text-center">Search VIA Content Metadata</h1>
+               <p class="text-center">This feature will search the entire blockchain for a unique hash, but due to API restrictions this is currently not accessible.</p>
+               <div class="flex justify-center py-4">
+                   <div class="flex flex-col items-center gap-3 max-w-[480px] w-full px-4 py-3">
+                       <form id="searchForm" enctype="multipart/form-data" class="w-full flex flex-col items-center">
+                          <div id="dropAreaSearch" class="w-full h-20 border border-gray-200 flex items-center justify-center mb-4" ondrop="handleDrop(event, 'searchFileInput')" ondragover="handleDragOver(event)">
+                             <p id="searchThumbnailText" class="text-gray-400">Drag and Drop Video or Choose From Downloads</p>
+                          </div>
+                         <input type="file" id="searchFileInput" name="file" accept="video/mp4,video/quicktime,image/png,image/jpeg" class="hidden" onchange="showSearchThumbnail(this)">
+                         <label for="searchFileInput" class="flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-[#F0F2F5] text-[#141414] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
+                             <span class="truncate">Choose Video</span>
+                         </label>
+                          <button type="button" onclick="searchFile()" class="mt-4 flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 flex-1 bg-[#359EFF] text-[#FFFFFF] text-base font-bold leading-normal tracking-[0.015em] w-full text-center">
+                              <span class="truncate">Run Search</span>
+                           </button>
+                     </form>
+                        <div id="searchProgressBar" class="w-full h-5 bg-[#F3F4F6] mt-4 rounded-full overflow-hidden hidden">
+                            <div id="searchProgress" class="h-full bg-[#359EFF] w-0"></div>
+                        </div>
+                       <div id="searchInfoBox" class="w-full mt-4 p-4 border border-gray-200 rounded">
+                            <p class="font-bold">Wallet: <span id="searchWallet"></span></p>
+                           <p class="font-bold">Hash: <span id="searchHash"></span></p>
+                           <p id="searchEndMessage" class="mt-2"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 <!-- Comparison Section -->
 <div class="section" id="compare">
