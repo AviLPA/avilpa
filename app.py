@@ -7,15 +7,16 @@ import requests
 from blockfrost import BlockFrostApi
 import logging
 import time
-from PIL import Image, UnidentifiedImageError
+from PIL import Image, UnidentifiedImageError, ImageChops
+from pdf2image import convert_from_path
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 
-API_URL = "https://cardano-mainnet.blockfrost.io/api/v0"
-API_KEY = "mainnetFBbCwStELF11HELdNM1K9YAKmcs1GUdl"
+API_URL = "https://cardano-preview.blockfrost.io/api/v0"
+API_KEY = "previewkFJ6LviCinOWh2xDs6wuHGJH5j2318lC"
 api = BlockFrostApi(project_id=API_KEY)
 
 progress_data = {'processed_frames': 0, 'total_frames': 0}
@@ -63,6 +64,46 @@ def search_metadata_for_hash(wallet_address, hash_value):
             break
     return None
 
+def search_entire_blockchain_for_hash(hash_value):
+    headers = {'project_id': API_KEY}
+    page = 1
+    while True:
+        try:
+            response = requests.get(f"{API_URL}/metadata/txs/labels?page={page}", headers=headers)
+            response.raise_for_status()
+            labels = response.json()
+            if not labels:
+                break
+            for label in labels:
+                label_page = 1
+                while True:
+                    metadata_response = requests.get(f"{API_URL}/metadata/txs/labels/{label['label']}?page={label_page}", headers=headers)
+                    metadata_response.raise_for_status()
+                    transactions = metadata_response.json()
+                    if not transactions:
+                        break
+                    for tx in transactions:
+                        if 'json_metadata' in tx:
+                            json_metadata = tx['json_metadata']
+                            if isinstance(json_metadata, dict):
+                                for key, value in json_metadata.items():
+                                    if isinstance(value, list) and hash_value in value:
+                                        logging.debug("Transaction found with hash in metadata")
+                                        return tx['tx_hash'], tx
+                                    elif value == hash_value:
+                                        logging.debug("Transaction found with hash in metadata")
+                                        return tx['tx_hash'], tx
+                            elif isinstance(json_metadata, list):
+                                if hash_value in json_metadata:
+                                    logging.debug("Transaction found with hash in metadata")
+                                    return tx['tx_hash'], tx
+                    label_page += 1
+            page += 1
+        except requests.exceptions.RequestException as e:
+            logging.error(f"Request exception: {e}")
+            break
+    return None
+
 def video_to_binary(video_path, num_colors=8, target_resolution=(640, 480)):
     logging.debug(f"Processing video: {video_path}")
     cap = cv2.VideoCapture(video_path)
@@ -88,8 +129,6 @@ def video_to_binary(video_path, num_colors=8, target_resolution=(640, 480)):
         frame_count += 1
         progress_data['processed_frames'] = frame_count
         logging.debug(f"Processed frame {frame_count}/{total_frames}")
-        # Release the frame to save memory
-        del frame, frame_image, frame_binary
         time.sleep(0.1)  # Simulate processing time
 
     cap.release()
@@ -118,14 +157,33 @@ def image_to_binary(image, num_colors=8):
         logging.error(f"Error in image_to_binary: {e}")
         return ""
 
+def pdf_to_binary(pdf_path, num_colors=8):
+    try:
+        logging.debug(f"Processing PDF: {pdf_path}")
+        images = convert_from_path(pdf_path)
+        binary_code = ""
+        for image in images:
+            binary_code += image_to_binary(image, num_colors)
+        return binary_code
+    except Exception as e:
+        logging.error(f"Error in pdf_to_binary: {e}")
+        return ""
+
 @app.route('/upload_file', methods=['POST'])
 def upload_file():
     logging.debug("Upload file endpoint called")
     file = request.files.get('file')
     new_wallet = request.form.get('newWallet')
     current_hash = request.form.get('currentHash')
+    wallet = request.form.get('wallet')  # Get the wallet address from the form
+
     logging.debug(f"Received new wallet: {new_wallet}")
     logging.debug(f"Current hash: {current_hash}")
+    logging.debug(f"Wallet address provided: {wallet}")
+
+    # Determine which wallet to use
+    wallet_to_use = wallet if wallet else "addr_test1qz8na2e74ewzkn6aekrtutlf93fmsrpst5runwe4frezvf2u5qvmpqpcz8fd848xf9efhjd3xmnmud538w6gplr3hj3qvhy6dd"
+    logging.debug(f"Using wallet: {wallet_to_use}")
 
     if new_wallet and current_hash:
         logging.debug("Searching new wallet with provided hash")
@@ -161,8 +219,10 @@ def upload_file():
                 except UnidentifiedImageError as e:
                     logging.error(f"Error opening image: {e}")
                     return jsonify({'message': 'Failed to process image: Unidentified image format.'})
-            elif file.filename.lower().endswith('.mp4'):
+            elif file.filename.lower().endswith('.mp4') or file.filename.lower().endswith('.mov'):
                 binary_code = video_to_binary(file_path)
+            elif file.filename.lower().endswith('.pdf'):
+                binary_code = pdf_to_binary(file_path)
             else:
                 logging.error("Unsupported file type")
                 return jsonify({'message': 'Unsupported file type.'})
@@ -170,9 +230,6 @@ def upload_file():
             if binary_code:
                 hash_result = hash_binary_data(binary_code)
                 logging.debug(f"Binary data hashed: {hash_result}")
-
-                wallet_to_use = new_wallet if new_wallet else "addr1qyqmdurljd7v07rketnnc3udc9w547pya7v8jnh6zalrymyn84lfn88ypr4p6lvkaqwq46h2g67whtnenlpv2w9jvads3d458l"
-                logging.debug(f"Using wallet: {wallet_to_use}")
 
                 tx = search_metadata_for_hash(wallet_to_use, hash_result)
                 if tx:
@@ -218,8 +275,10 @@ def search_file():
 
         if file.filename.lower().endswith(('.png', '.jpg', '.jpeg')):
             binary_code = image_to_binary(Image.open(file_path))
-        elif file.filename.lower().endswith('.mp4'):
+        elif file.filename.lower().endswith('.mp4') or file.filename.lower().endswith('.mov'):
             binary_code = video_to_binary(file_path)
+        elif file.filename.lower().endswith('.pdf'):
+            binary_code = pdf_to_binary(file_path)
         else:
             logging.error("Unsupported file type")
             return jsonify({'message': 'Unsupported file type.'})
@@ -340,6 +399,42 @@ def compare_videos_route():
         logging.error(f"Error saving or processing videos: {e}")
         return jsonify({'message': 'Error processing videos.'})
 
+@app.route('/compare_images', methods=['POST'])
+def compare_images_route():
+    logging.debug("Compare images endpoint called")
+    image1 = request.files.get('image1')
+    image2 = request.files.get('image2')
+
+    if not image1 or not image2:
+        logging.error("One or both images not uploaded")
+        return jsonify({'message': 'Both images must be uploaded.'})
+
+    image1_path = os.path.join('uploads', image1.filename)
+    image2_path = os.path.join('uploads', image2.filename)
+
+    try:
+        image1.save(image1_path)
+        image2.save(image2_path)
+        logging.debug(f"Images saved to {image1_path} and {image2_path}")
+
+        img1 = Image.open(image1_path)
+        img2 = Image.open(image2_path)
+
+        diff = ImageChops.difference(img1, img2)
+        diff_path = os.path.join('comparisons', 'diff.jpg')
+        diff.save(diff_path)
+
+        total_diff = np.sum(np.array(diff))
+        img1_size = img1.size[0] * img1.size[1]
+        percent_diff = (total_diff / (255 * img1_size)) * 100
+
+        logging.debug(f"Differences: {percent_diff}")
+
+        return jsonify({'message': 'Comparison complete', 'diff_image': diff_path, 'difference_percentage': percent_diff})
+    except Exception as e:
+        logging.error(f"Error saving or processing images: {e}")
+        return jsonify({'message': 'Error processing images.'})
+
 @app.route('/progress')
 def progress():
     def generate():
@@ -366,8 +461,10 @@ def add_to_list():
 
         if file.filename.lower().endswith(('.png', '.jpg', '.jpeg')):
             binary_code = image_to_binary(Image.open(file_path))
-        elif file.filename.lower().endswith('.mp4'):
+        elif file.filename.lower().endswith('.mp4') or file.filename.lower().endswith('.mov'):
             binary_code = video_to_binary(file_path)
+        elif file.filename.lower().endswith('.pdf'):
+            binary_code = pdf_to_binary(file_path)
         else:
             logging.error("Unsupported file type")
             return jsonify({'success': False, 'message': 'Unsupported file type.'})
@@ -394,5 +491,5 @@ if __name__ == '__main__':
         os.makedirs('uploads')
     if not os.path.exists('comparisons'):
         os.makedirs('comparisons')
-    app.run(debug=True, port=5009)
+    app.run(debug=True, port=5008)
 
