@@ -133,7 +133,7 @@ def upload_file():
         if tx:
             logging.debug("Transaction found")
             return jsonify({
-                'message': 'Transaction found with this hash within the declared wallet. Frame by frame analysis has confirmed authenticity',
+                'message': 'Transaction found with this hash within the declared wallet. DocuLink analysis has confirmed authenticity',
                 'hash': current_hash,
                 'wallet': new_wallet,
                 'total_frames': progress_data.get('total_frames', 0),
